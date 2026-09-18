@@ -49,6 +49,21 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
   const [submitted, setSubmitted] = useState(false);
   const [ticketId, setTicketId] = useState('');
 
+  // Auto-scroll to contact form if hash is present
+  React.useEffect(() => {
+    const hash = window.location.hash.toLowerCase();
+    if (hash.includes('contact-form') || hash.includes('form') || hash.includes('inquiry')) {
+      setTimeout(() => {
+        const formEl = document.getElementById('contact-form');
+        if (formEl) {
+          const navbarOffset = 88;
+          const pos = formEl.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
+          window.scrollTo({ top: Math.max(0, pos), behavior: 'smooth' });
+        }
+      }, 150);
+    }
+  }, []);
+
   // FAQ Accordion State
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
@@ -320,7 +335,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
       {/* ====================================================================
           SECTION 3: SPLIT INQUIRY FORM & SPECIALIST TRUST HUB
          ==================================================================== */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="contact-form" className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* Left Column: Interactive Contact Form (7 Cols) */}

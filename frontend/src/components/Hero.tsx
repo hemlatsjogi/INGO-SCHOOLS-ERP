@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play, Star, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Play, Star } from 'lucide-react';
 import { AnimatedPaperAirplane } from './AnimatedPaperAirplane';
 import { DoodleAccents } from './DoodleAccents';
 
@@ -10,13 +10,7 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreFeatures }) => {
-  // Single Primary Student Visual
-  const student = {
-    name: 'Aarav Sharma',
-    grade: 'Grade 5',
-    tag: 'Star Scholar',
-    image: '/assets/indian_student_hero.svg'
-  };
+  const studentImage = '/assets/indian_student_hero.svg';
 
   return (
     <section className="relative w-full pt-6 sm:pt-10 lg:pt-14 pb-4 overflow-visible">
@@ -111,7 +105,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreFeatures }) 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="mt-8 flex items-center gap-3 bg-white/90 backdrop-blur-sm border border-slate-100 px-4 py-2 rounded-2xl shadow-sm"
+              className="mt-8 flex items-center gap-3 bg-white/90 backdrop-blur-md border border-slate-100 px-4 py-2 rounded-2xl shadow-sm"
             >
               <div className="flex -space-x-2 overflow-hidden items-center">
                 <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow-xs bg-blue-50">
@@ -150,7 +144,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreFeatures }) 
 
           </div>
 
-          {/* Right Column: Single Indian Student Visual + Parent Connect Card (SVG Format) + Animated Paper Airplane */}
+          {/* Right Column: Single Indian Student Visual + Animated Paper Airplane */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
 
             {/* Background Origami Facets and Hand-drawn Doodles */}
@@ -173,70 +167,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreFeatures }) 
                 >
                   {/* Single Indian Student Image in SVG format */}
                   <img
-                    src={student.image}
-                    alt={`${student.name} - INGO Schools Student`}
+                    src={studentImage}
+                    alt="INGO Schools Student"
                     className="w-full h-auto object-contain filter drop-shadow-2xl transition-transform duration-500 hover:scale-[1.02]"
                   />
-
-                  {/* Student Name & Grade Overlay Pill */}
-                  <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-slate-100 shadow-md flex items-center gap-2 z-20">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <div className="text-left">
-                      <p className="text-xs font-bold text-slate-800 leading-tight">
-                        {student.name}
-                      </p>
-                      <p className="text-[10px] text-slate-500 font-medium">
-                        {student.grade} &bull; {student.tag}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* =========================================================================
-                      DEDICATED PARENT SPOT (SVG FORMAT):
-                      As requested, users can add/customize the parent image in SVG format here!
-                      Image asset location: /assets/indian_parents.svg
-                     ========================================================================= */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 15, x: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                    transition={{ duration: 0.65, delay: 0.35, ease: "easeOut" }}
-                    whileHover={{ scale: 1.04, y: -3 }}
-                    onClick={onOpenBooking}
-                    className="absolute -bottom-4 -right-3 sm:-right-6 z-30 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 border border-slate-100 shadow-xl max-w-[210px] sm:max-w-[230px] group cursor-pointer"
-                    title="Click to view Parent Connect Portal Demo"
-                  >
-                    <div className="flex items-center gap-2.5 mb-2">
-                      {/* Parent Image in SVG format */}
-                      <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 flex-shrink-0 shadow-inner">
-                        <img
-                          // src="/assets/indian_parents.svg"
-                          // alt="Parent Portal - INGO Schools"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="text-left">
-                        <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-50 text-[9px] font-bold text-emerald-600 mb-0.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          <span>Parent Connect</span>
-                        </div>
-                        <p className="text-xs font-bold text-slate-800 leading-tight">
-                          Parent Portal
-                        </p>
-                        <p className="text-[10px] text-slate-500 font-medium">
-                          Real-time Updates
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-slate-50 rounded-lg px-2 py-1.5 flex items-center justify-between text-[10px] text-slate-600 font-medium border border-slate-100/80">
-                      <span className="font-semibold text-slate-700">Aryan: 94% (A+)</span>
-                      <span className="text-emerald-600 font-bold flex items-center gap-0.5">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                        <span>Live</span>
-                      </span>
-                    </div>
-                  </motion.div>
-
                 </motion.div>
               </div>
 

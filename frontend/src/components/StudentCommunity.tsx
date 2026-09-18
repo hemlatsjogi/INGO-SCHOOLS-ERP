@@ -43,37 +43,11 @@ export const StudentCommunity: React.FC<StudentCommunityProps> = ({ onOpenBookin
                 alt="Group of diverse INGO Schools students learning together"
                 className="w-full h-auto object-contain filter drop-shadow-xl transition-transform duration-500 hover:scale-[1.02]"
               />
-
-              {/* Live Classroom Overlay Badge */}
-              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md border border-slate-100 flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-slate-800">Class of 2026</span>
-              </div>
             </div>
-
-            {/* Floating Metric Pill */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              className="absolute -bottom-5 right-4 sm:right-8 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 z-20"
-            >
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                <Users className="w-5 h-5" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs font-bold text-slate-900">480,000+ Students</p>
-                <p className="text-[10px] text-slate-500">Across 1,250+ Schools</p>
-              </div>
-            </motion.div>
           </motion.div>
 
           {/* Right: Content & Community Highlights */}
           <div className="lg:col-span-5 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
-              <Users className="w-3.5 h-3.5" />
-              <span>Student-Centered Experience</span>
-            </div>
-
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
               Designed for Happy Students & Inspired Classrooms
             </h2>
