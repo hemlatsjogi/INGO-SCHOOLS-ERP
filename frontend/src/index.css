@@ -1,0 +1,83 @@
+@import './responsive.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Doodle Underline SVG Animation */
+.doodle-stroke {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawStroke 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.4s;
+}
+
+@keyframes drawStroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Soft Glow Background Elements */
+.ambient-glow-blue {
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+}
+
+.ambient-glow-cyan {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.09) 0%, rgba(248, 250, 252, 0) 70%);
+}
+
+/* Custom Dotted Flight Trail Animation */
+@keyframes flightTrailDash {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -40;
+  }
+}
+
+.flight-trail-animated {
+  stroke-dasharray: 4 4;
+  animation: flightTrailDash 1.2s linear infinite;
+}
+
+/* Custom Paper Airplane Cursor Active State */
+@media (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active a,
+  html.custom-cursor-active button,
+  html.custom-cursor-active input,
+  html.custom-cursor-active select,
+  html.custom-cursor-active textarea,
+  html.custom-cursor-active [role="button"],
+  html.custom-cursor-active .cursor-pointer {
+    cursor: none !important;
+  }
+}
+
+/* Fallback paper airplane cursor for browser native pointer */
+.paper-plane-cursor {
+  cursor: url('/assets/airplane-cursor-32.svg') 31 1, url('/assets/airplane-cursor-32.png') 31 1, pointer;
+}
+
+
