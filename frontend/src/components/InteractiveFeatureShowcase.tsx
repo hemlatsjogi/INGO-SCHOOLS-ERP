@@ -8,7 +8,6 @@ import {
   Award,
   BarChart3,
   ArrowRight,
-  Plus,
   TrendingUp,
   Sparkles,
   Check
@@ -612,11 +611,7 @@ export const InteractiveFeatureShowcase: React.FC<InteractiveFeatureShowcaseProp
             {/* Left Copy & Action */}
             <div className="lg:col-span-6 space-y-4 sm:space-y-6">
               
-              {/* Badge: "+ Ready to Get Started?" */}
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 text-blue-600 text-xs sm:text-sm font-extrabold border border-blue-200/80 shadow-sm">
-                <Plus className="w-3.5 h-3.5 stroke-[3]" />
-                <span>Ready to Get Started?</span>
-              </div>
+             
 
               {/* Title */}
               <h2 className="text-2xl sm:text-4xl lg:text-[2.65rem] font-black text-slate-900 tracking-tight leading-[1.15]">

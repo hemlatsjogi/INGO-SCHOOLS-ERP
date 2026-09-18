@@ -131,18 +131,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
           {/* Left Column: Headline, Doodles, Subtitle, CTA */}
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
             
-            {/* Pill Badge */}
-            <motion.div
-              variants={smoothReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              custom={0}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs sm:text-sm font-bold shadow-sm"
-            >
-              <Sparkles className="w-3.5 h-3.5 fill-blue-600" />
-              <span>About INGO Schools</span>
-            </motion.div>
+            
 
             {/* Top Sparkle Doodle */}
             <div className="relative">
@@ -293,19 +282,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
           
           {/* Left Column: Narrative Copy */}
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
-            
-            {/* Pill Badge */}
-            <motion.div
-              variants={smoothReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              custom={0}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs sm:text-sm font-bold"
-            >
-              <Sparkles className="w-3.5 h-3.5 fill-blue-600" />
-              <span>Our Story</span>
-            </motion.div>
 
             {/* Headline */}
             <motion.h2
@@ -316,8 +292,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
               custom={1}
               className="text-3xl sm:text-4xl lg:text-[3rem] font-extrabold text-slate-900 tracking-tight leading-[1.18]"
             >
-              From Challenges <br />
-              <span className="text-blue-600">to a Smarter Solution</span>
+            <span className="block mb-2">
+              From Challenges
+            </span>
+
+            <span className="block text-blue-700">
+              to a Smarter Solution
+            </span>
             </motion.h2>
 
             {/* Description */}
@@ -434,10 +415,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
           {/* Header Row: Title on Left, Subtitle on Right + Whimsical Accents */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 sm:pb-10 border-b border-slate-100 relative">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold">
-                <Sparkles className="w-3 h-3 fill-blue-600" />
-                <span>What We Believe</span>
-              </div>
+              
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Our Core Values
               </h2>
@@ -521,11 +499,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
             {/* Left Column: Heading, Subtitle & 2x2 Metric Badges */}
             <div className="lg:col-span-6 space-y-6">
               
-              {/* Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-blue-600 text-xs sm:text-sm font-bold border border-blue-200/80 shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 fill-blue-600" />
-                <span>Our Impact</span>
-              </div>
 
               {/* Title & Sparkle Doodle */}
               <div className="relative">

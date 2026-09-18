@@ -128,19 +128,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
          ==================================================================== */}
       <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 sm:space-y-6">
         
-        {/* Pill Badge */}
-        <motion.div
-          variants={smoothReveal}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          custom={0}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs sm:text-sm font-bold shadow-sm"
-        >
-          <Sparkles className="w-4 h-4 text-blue-600" />
-          <span>Get in Touch with INGO Schools</span>
-        </motion.div>
-
+       
         {/* Main Headline with Brush Underline */}
         <motion.h1
           variants={smoothReveal}
@@ -624,10 +612,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
           className="space-y-6"
         >
           <div className="text-center space-y-2 mb-8">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold">
-              <Sparkles className="w-3 h-3 fill-blue-600" />
-              <span>Got Questions?</span>
-            </div>
+            
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
               Frequently Asked Questions
             </h2>
