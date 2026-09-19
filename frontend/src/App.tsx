@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { FeatureCards } from './components/FeatureCards';
 import { StudentCommunity } from './components/StudentCommunity';
+import FAQ from "./components/FAQ";
 import { ServicesPage } from './components/ServicesPage';
 import { KeyFeaturesPage } from './components/KeyFeaturesPage';
 import { AboutPage } from './components/AboutPage';
@@ -134,6 +135,7 @@ export const App: React.FC = () => {
 
               {/* Group of Students Community Showcase */}
               <StudentCommunity onOpenBooking={handleOpenBooking} />
+              <FAQ />
             </motion.div>
           )}
 

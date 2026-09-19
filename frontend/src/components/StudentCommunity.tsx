@@ -48,6 +48,7 @@ export const StudentCommunity: React.FC<StudentCommunityProps> = ({ onOpenBookin
 
           {/* Right: Content & Community Highlights */}
           <div className="lg:col-span-5 space-y-5">
+
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
               Designed for Happy Students & Inspired Classrooms
             </h2>

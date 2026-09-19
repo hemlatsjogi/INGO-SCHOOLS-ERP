@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ShieldCheck, Zap, Laptop } from 'lucide-react';
+import { ShieldCheck, Zap, Laptop } from 'lucide-react';
 import { InteractiveFeatureShowcase } from './InteractiveFeatureShowcase';
 
 interface KeyFeaturesPageProps {
@@ -16,17 +16,7 @@ export const KeyFeaturesPage: React.FC<KeyFeaturesPageProps> = ({ onOpenBooking 
          ==================================================================== */}
       <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 sm:space-y-6">
         
-        {/* Pill Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-600 text-xs sm:text-sm font-bold shadow-sm"
-        >
-          <Sparkles className="w-4 h-4 text-blue-600" />
-          <span>Core ERP Capabilities</span>
-        </motion.div>
-
+       
         {/* Main Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
