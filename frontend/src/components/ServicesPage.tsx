@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
@@ -26,6 +26,7 @@ import {
   IndianRupee,
   Receipt,
   Wallet,
+  WalletCards,
   PieChart,
   Bus,
   Library,
@@ -37,9 +38,16 @@ import {
   ClipboardCheck
 } from 'lucide-react';
 import { ServicesHeroVisual } from './ServicesHeroVisual';
+import {
+  ServiceModal,
+  serviceData,
+  ServiceId,
+  ServiceDetailData
+} from './ServiceModal';
 
 interface ServicesPageProps {
-  onOpenBooking: () => void;
+  onOpenBooking?: (moduleName?: string) => void;
+  onNavigate?: (page: string) => void;
 }
 
 interface ServiceCardItem {
@@ -50,18 +58,21 @@ interface ServiceCardItem {
 }
 
 interface ServiceCategory {
-  id: string;
+  id: ServiceId;
   name: string;
   icon: React.ReactNode;
   iconColor: string;
   cards: ServiceCardItem[];
 }
 
-export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => {
-  // Category tabs data - exact match with User Reference Screenshots
+export const ServicesPage: React.FC<ServicesPageProps> = ({
+  onOpenBooking,
+  onNavigate: _onNavigate
+}) => {
+  // 5 Categories: 4 core services + Transport/Library/Hostel
   const categories: ServiceCategory[] = [
     {
-      id: 'academics',
+      id: 'academic-management',
       name: 'Academics Management',
       icon: <GraduationCap className="w-6 h-6 text-[#7C3AED]" />,
       iconColor: 'text-[#7C3AED]',
@@ -69,131 +80,149 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
         {
           number: '01',
           title: 'Curriculum & Syllabus',
-          desc: 'Plan and coordinate academic courses, syllabus milestones, classes and subject allocations.',
+          desc:
+            'Plan and coordinate academic courses, syllabus milestones, classes and subject allocations.',
           icon: <BookOpen className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '02',
           title: 'Classroom & Section Setup',
-          desc: 'Configure grades, class sections, room allocations and academic term dates effortlessly.',
+          desc:
+            'Configure grades, class sections, room allocations and academic term dates effortlessly.',
           icon: <Compass className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '03',
           title: 'Timetable Scheduling',
-          desc: 'Build clash-free timetables for teachers, classrooms and student batches with auto-scheduling.',
+          desc:
+            'Build clash-free timetables for teachers, classrooms and student batches with auto-scheduling.',
           icon: <Clock className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '04',
           title: 'Homework & Assignments',
-          desc: 'Distribute homework digitally, collect student submissions and grade coursework in one workflow.',
+          desc:
+            'Distribute homework digitally, collect student submissions and grade coursework in one workflow.',
           icon: <ClipboardList className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '05',
           title: 'Digital Study Resources',
-          desc: 'Upload and organize syllabus notes, learning presentations and reference materials online.',
+          desc:
+            'Upload and organize syllabus notes, learning presentations and reference materials online.',
           icon: <FolderArchive className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '06',
           title: 'Academic Calendar',
-          desc: 'Coordinate examination schedules, school events, holidays and parent-teacher meeting dates.',
+          desc:
+            'Coordinate examination schedules, school events, holidays and parent-teacher meeting dates.',
           icon: <Calendar className="w-5 h-5 text-[#5B4DF6]" />
         }
       ]
     },
     {
-      id: 'student',
+      id: 'student-management',
       name: 'Student Management',
-      icon: <GraduationCap className="w-6 h-6 text-[#06B6D4]" />,
+      icon: <Users className="w-6 h-6 text-[#06B6D4]" />,
       iconColor: 'text-[#06B6D4]',
       cards: [
         {
           number: '01',
           title: 'Admissions',
-          desc: 'Manage student admissions and onboarding through a structured digital workflow.',
+          desc:
+            'Manage student admissions and onboarding through a structured digital workflow.',
           icon: <UserPlus className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '02',
           title: 'Student Profiles',
-          desc: 'Keep student information, academic records and details organized in one place.',
+          desc:
+            'Keep student information, academic records and details organized in one place.',
           icon: <Contact2 className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '03',
           title: 'Attendance',
-          desc: 'Record and monitor daily attendance across classes and sections.',
+          desc:
+            'Record and monitor daily attendance across classes and sections.',
           icon: <CalendarCheck className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '04',
           title: 'Parent Communication',
-          desc: 'Keep parents connected with announcements, updates and important school communication.',
+          desc:
+            'Keep parents connected with announcements, updates and important school communication.',
           icon: <MessageSquare className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '05',
           title: 'Student Performance',
-          desc: 'Follow student progress and understand performance over time.',
+          desc:
+            'Follow student progress and understand performance over time.',
           icon: <Trophy className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '06',
           title: 'Student Records',
-          desc: 'Access important student documents and records whenever they are needed.',
+          desc:
+            'Access important student documents and records whenever they are needed.',
           icon: <FileText className="w-5 h-5 text-[#5B4DF6]" />
         }
       ]
     },
     {
-      id: 'hr-finance',
+      id: 'hr-finance-management',
       name: 'HR & Finance Management',
-      icon: <Users className="w-6 h-6 text-[#EC4899]" />,
+      icon: <WalletCards className="w-6 h-6 text-[#EC4899]" />,
       iconColor: 'text-[#EC4899]',
       cards: [
         {
           number: '01',
           title: 'Staff & Payroll',
-          desc: 'Automate teacher payroll, salary slips, deductions, tax compliance and allowances.',
+          desc:
+            'Automate teacher payroll, salary slips, deductions, tax compliance and allowances.',
           icon: <IndianRupee className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '02',
           title: 'Fee Collection & Invoicing',
-          desc: 'Manage fee structures, online parent payments, dues reminders and instant digital receipts.',
+          desc:
+            'Manage fee structures, online parent payments, dues reminders and instant digital receipts.',
           icon: <Receipt className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '03',
           title: 'Staff Leave & Attendance',
-          desc: 'Track teacher biometric check-ins, leave approvals and automated substitute teacher allocation.',
+          desc:
+            'Track teacher biometric check-ins, leave approvals and automated substitute teacher allocation.',
           icon: <UserCheck className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '04',
           title: 'Expense Management',
-          desc: 'Track institutional expenses, departmental budgets, utility bills and vendor invoices.',
+          desc:
+            'Track institutional expenses, departmental budgets, utility bills and vendor invoices.',
           icon: <Wallet className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '05',
           title: 'Teacher Recruitment',
-          desc: 'Coordinate job openings, candidate interviews, teacher evaluations and onboarding files.',
+          desc:
+            'Coordinate job openings, candidate interviews, teacher evaluations and onboarding files.',
           icon: <UserPlus className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '06',
           title: 'Financial Reports & Audits',
-          desc: 'Generate complete balance sheets, financial summaries and audit trails effortlessly.',
+          desc:
+            'Generate complete balance sheets, financial summaries and audit trails effortlessly.',
           icon: <PieChart className="w-5 h-5 text-[#5B4DF6]" />
         }
       ]
     },
     {
-      id: 'exam',
+      id: 'exam-management',
       name: 'Exam Management',
       icon: <ClipboardCheck className="w-6 h-6 text-[#F59E0B]" />,
       iconColor: 'text-[#F59E0B]',
@@ -201,37 +230,43 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
         {
           number: '01',
           title: 'Exam Scheduling',
-          desc: 'Create examination schedules and coordinate subjects, classes and dates.',
+          desc:
+            'Create examination schedules and coordinate subjects, classes and dates.',
           icon: <Calendar className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '02',
           title: 'Question Management',
-          desc: 'Organize question sets and examination material in one place.',
+          desc:
+            'Organize question sets and examination material in one place.',
           icon: <ListChecks className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '03',
           title: 'Exam Attendance',
-          desc: 'Track student participation and examination attendance with ease.',
+          desc:
+            'Track student participation and examination attendance with ease.',
           icon: <UserCheck className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '04',
           title: 'Results Management',
-          desc: 'Manage marks, grades and academic results through one workflow.',
+          desc:
+            'Manage marks, grades and academic results through one workflow.',
           icon: <BarChart2 className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '05',
           title: 'Performance Reports',
-          desc: 'Understand student performance through meaningful academic reports.',
+          desc:
+            'Understand student performance through meaningful academic reports.',
           icon: <Trophy className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '06',
           title: 'Report Cards',
-          desc: 'Generate organized student report cards without repetitive manual work.',
+          desc:
+            'Generate organized student report cards without repetitive manual work.',
           icon: <Award className="w-5 h-5 text-[#5B4DF6]" />
         }
       ]
@@ -245,46 +280,117 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
         {
           number: '01',
           title: 'GPS Bus Tracking',
-          desc: 'Live school bus location monitoring with instant arrival alerts for parents and drivers.',
+          desc:
+            'Live school bus location monitoring with instant arrival alerts for parents and drivers.',
           icon: <Bus className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '02',
           title: 'Library Book Catalog',
-          desc: 'Barcode scanning, book issue and return tracking, inventory management and overdue fines.',
+          desc:
+            'Barcode scanning, book issue and return tracking, inventory management and overdue fines.',
           icon: <Library className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '03',
           title: 'Hostel Room Allocation',
-          desc: 'Manage dormitory beds, student room assignments, warden logs and mess meal plans.',
+          desc:
+            'Manage dormitory beds, student room assignments, warden logs and mess meal plans.',
           icon: <Bed className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '04',
           title: 'Route & Driver Logs',
-          desc: 'Optimize bus routes, driver background verification and vehicle maintenance schedules.',
+          desc:
+            'Optimize bus routes, driver background verification and vehicle maintenance schedules.',
           icon: <Navigation className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '05',
           title: 'Digital E-Books',
-          desc: 'Provide digital library access to academic books, journals, study guides and publications.',
+          desc:
+            'Provide digital library access to academic books, journals, study guides and publications.',
           icon: <BookMarked className="w-5 h-5 text-[#5B4DF6]" />
         },
         {
           number: '06',
           title: 'Gate Pass & Security',
-          desc: 'Issue digital visitor gate passes and monitor hostel check-ins and check-outs securely.',
+          desc:
+            'Issue digital visitor gate passes and monitor hostel check-ins and check-outs securely.',
           icon: <ShieldCheck className="w-5 h-5 text-[#5B4DF6]" />
         }
       ]
     }
   ];
 
-  // Default active tab: 'exam' as shown in the primary reference image
-  const [activeTabId, setActiveTabId] = useState<string>('exam');
-  const currentCategory = categories.find((c) => c.id === activeTabId) || categories[3];
+  // Active category tab state - defaults to exam-management or hr-finance
+  const [activeTabId, setActiveTabId] = useState<ServiceId>('hr-finance-management');
+  const currentCategory =
+    categories.find((c) => c.id === activeTabId) || categories[2];
+
+  // Reusable Service modal state
+  const [selectedService, setSelectedService] = useState<ServiceDetailData | null>(
+    null
+  );
+
+  const handleOpenServiceModal = (id: ServiceId) => {
+    if (serviceData[id]) {
+      setSelectedService(serviceData[id]);
+    }
+  };
+
+  const handleCloseServiceModal = () => {
+    setSelectedService(null);
+  };
+
+  // Clicking "Explore Module" closes service popup and opens the Contact Form popup without redirecting
+  const handleExploreModule = () => {
+    const moduleTitle = selectedService?.title;
+    setSelectedService(null);
+    if (onOpenBooking) {
+      onOpenBooking(moduleTitle);
+    }
+  };
+
+  // Synchronize hash with active tab & smooth scrolling with sticky navbar offset
+  const syncHashToCategory = () => {
+    const rawHash = window.location.hash.replace('#', '').trim().toLowerCase();
+    if (!rawHash) return;
+
+    let targetTab: ServiceId | null = null;
+    if (rawHash.includes('academic')) targetTab = 'academic-management';
+    else if (rawHash.includes('student')) targetTab = 'student-management';
+    else if (rawHash.includes('hr') || rawHash.includes('finance'))
+      targetTab = 'hr-finance-management';
+    else if (rawHash.includes('exam')) targetTab = 'exam-management';
+    else if (
+      rawHash.includes('transport') ||
+      rawHash.includes('hostel') ||
+      rawHash.includes('library')
+    )
+      targetTab = 'transport';
+
+    if (targetTab) {
+      setActiveTabId(targetTab);
+      setTimeout(() => {
+        const el =
+          document.getElementById(targetTab!) ||
+          document.getElementById('services-modules-section');
+        if (el) {
+          const navbarOffset = 88;
+          const pos =
+            el.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
+          window.scrollTo({ top: Math.max(0, pos), behavior: 'smooth' });
+        }
+      }, 120);
+    }
+  };
+
+  useEffect(() => {
+    syncHashToCategory();
+    window.addEventListener('hashchange', syncHashToCategory);
+    return () => window.removeEventListener('hashchange', syncHashToCategory);
+  }, []);
 
   const whyChooseFeatures = [
     {
@@ -309,16 +415,13 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
 
   return (
     <div className="w-full space-y-16 sm:space-y-24 py-4 sm:py-8 select-none">
-      
       {/* ====================================================================
           1. SERVICES HERO SECTION
          ==================================================================== */}
       <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
-          
           {/* Left Text Column */}
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
-            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -344,48 +447,49 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
                     strokeLinejoin="round"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                    transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
                   />
                 </svg>
               </span>
             </motion.h1>
 
-            {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed font-normal"
             >
-              From student management to fee tracking, manage your complete school operations from one simple platform.
+              From student management to fee tracking, manage your complete
+              school operations from one simple platform.
             </motion.p>
           </div>
 
-          {/* Right Visual Column: Staircase chalkboard grid & background-removed Indian student */}
+          {/* Right Visual Column */}
           <div className="lg:col-span-6 relative flex items-center justify-center">
             <ServicesHeroVisual />
           </div>
-
         </div>
       </section>
 
       {/* ====================================================================
           2. INTERACTIVE SERVICE TABS & DYNAMIC 6 CARDS GRID
-             (Exact replica of user reference images 1 & 2)
+             (Exact replica of user reference image 1)
          ==================================================================== */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+      <section
+        id="services-modules-section"
+        className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24"
+      >
         {/* Section Header */}
         <div className="text-center space-y-3 mb-10 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-extrabold text-slate-900 tracking-tight">
             Our Services & Modules
           </h2>
           <p className="text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
-            Hover over any category below to instantly reveal comprehensive modules and workflows.
+            Hover over or click any category below to instantly reveal comprehensive modules and workflows.
           </p>
         </div>
 
-        {/* Top Category Tabs Bar (Hover-activated) */}
+        {/* Top Category Tabs Bar with Exact IDs for Anchor Navigation */}
         <div className="w-full bg-[#FAF9F5] rounded-3xl p-3 sm:p-4 border border-slate-200/60 shadow-xs mb-10 overflow-x-auto scrollbar-none">
           <div className="flex items-center justify-between min-w-[680px] sm:min-w-0 sm:grid sm:grid-cols-5 gap-2 sm:gap-4 text-center">
             {categories.map((category) => {
@@ -393,9 +497,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
               return (
                 <div
                   key={category.id}
+                  id={category.id}
                   onMouseEnter={() => setActiveTabId(category.id)}
                   onClick={() => setActiveTabId(category.id)}
-                  className="flex flex-col items-center justify-center cursor-pointer py-2 px-1 sm:px-2 rounded-2xl transition-all duration-200 group"
+                  className="flex flex-col items-center justify-center cursor-pointer py-2 px-1 sm:px-2 rounded-2xl transition-all duration-200 group scroll-mt-24"
                   title={`View ${category.name}`}
                 >
                   {/* Category Icon with Cream Background Pill when Active */}
@@ -420,13 +525,17 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
                     {category.name}
                   </span>
 
-                  {/* Active Orange/Yellow Indicator Underline (as shown in images 1 & 2) */}
+                  {/* Active Orange/Yellow Indicator Underline */}
                   <div className="w-full h-1 mt-2.5 flex items-center justify-center overflow-hidden">
                     {isActive ? (
                       <motion.div
                         layoutId="active-category-underline"
                         className="w-16 sm:w-20 h-1 bg-[#EFA023] rounded-full"
-                        transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 450,
+                          damping: 35
+                        }}
                       />
                     ) : (
                       <div className="w-0 h-1" />
@@ -456,9 +565,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
                 whileHover={{ y: -5, transition: { duration: 0.18 } }}
                 className="relative bg-[#F3F0FE] rounded-3xl p-7 sm:p-8 border border-[#E6E0FE]/90 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer"
-                onClick={onOpenBooking}
+                onClick={() => handleOpenServiceModal(activeTabId)}
               >
-                {/* Card Top Row: Left Violet Icon Badge + Right Number Label */}
+                {/* Card Top Row: Left Icon Badge + Right Number Label */}
                 <div className="flex items-start justify-between">
                   <div className="w-11 h-11 rounded-2xl bg-white shadow-xs border border-purple-100/60 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
                     {card.icon}
@@ -479,15 +588,16 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
                 </div>
 
                 {/* Subtle Hover Indication */}
-                <div className="pt-4 mt-2 border-t border-purple-100/50 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <span className="text-xs font-semibold text-[#5B4DF6]">Explore Module</span>
+                <div className="pt-4 mt-2 border-t border-purple-100/50 flex items-center justify-between opacity-80 group-hover:opacity-100 transition-opacity duration-200">
+                  <span className="text-xs font-semibold text-[#5B4DF6]">
+                    Explore Module
+                  </span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#5B4DF6] group-hover:translate-x-1 transition-transform" />
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>
-
       </section>
 
       {/* ====================================================================
@@ -495,12 +605,13 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
          ==================================================================== */}
       <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-50/70 rounded-3xl p-6 sm:p-10 border border-slate-200/60 flex flex-col lg:flex-row items-center justify-between gap-8">
-          
           {/* Left Summary */}
           <div className="lg:max-w-lg space-y-3 text-left">
             <h3 className="text-2xl sm:text-3xl lg:text-[2rem] font-extrabold text-slate-900 tracking-tight leading-snug">
               <span>Why Choose Our </span>
-              <span className="inline-flex items-center text-amber-500 mr-1">✦</span>
+              <span className="inline-flex items-center text-amber-500 mr-1">
+                ✦
+              </span>
               <br className="hidden sm:inline" />
               <span className="relative inline-block text-slate-900">
                 Services?
@@ -528,7 +639,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
             </h3>
 
             <p className="text-sm text-slate-600 leading-relaxed pt-2">
-              Schools and districts save time and money, so they can focus on full-time staff and student outcomes. Subs work on their own terms while making a difference in students&apos; lives. The INGO platform makes it easy for administrators.
+              Schools and districts save time and money, so they can focus on
+              full-time staff and student outcomes. Subs work on their own terms
+              while making a difference in students&apos; lives. The INGO
+              platform makes it easy for administrators.
             </p>
           </div>
 
@@ -540,7 +654,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
                 whileHover={{ y: -3 }}
                 className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex flex-col items-center sm:items-start text-center sm:text-left gap-3"
               >
-                <div className={`w-11 h-11 rounded-full ${feat.iconBg} flex items-center justify-center shadow-inner`}>
+                <div
+                  className={`w-11 h-11 rounded-full ${feat.iconBg} flex items-center justify-center shadow-inner`}
+                >
                   {feat.icon}
                 </div>
                 <div>
@@ -554,10 +670,19 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
               </motion.div>
             ))}
           </div>
-
         </div>
       </section>
 
+      {/* ====================================================================
+          4. REUSABLE SERVICE DETAILS POPUP / MODAL
+             (Supports Academic, Student, HR & Finance, Exam, and Transport)
+         ==================================================================== */}
+      <ServiceModal
+        isOpen={!!selectedService}
+        service={selectedService}
+        onClose={handleCloseServiceModal}
+        onExploreModule={handleExploreModule}
+      />
     </div>
   );
 };

@@ -16,42 +16,77 @@ import { PaperAirplaneCursor } from './components/PaperAirplaneCursor';
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'home' | 'services' | 'features' | 'about' | 'contact'>('home');
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingModuleName, setBookingModuleName] = useState<string>('');
 
-  const handleOpenBooking = () => {
+  const handleOpenBooking = (moduleName?: string) => {
+    setBookingModuleName(moduleName || '');
     setIsBookingModalOpen(true);
   };
 
   const handleCloseBooking = () => {
     setIsBookingModalOpen(false);
+    setBookingModuleName('');
   };
 
   const handleNavigate = (page: string) => {
     const p = page.toLowerCase();
-    if (p.includes('contact')) {
+    const hashIndex = page.indexOf('#');
+    let targetHash = '';
+    let targetPage = p;
+
+    if (hashIndex !== -1) {
+      targetHash = page.substring(hashIndex + 1);
+      targetPage = p.substring(0, hashIndex);
+    }
+
+    if (targetHash) {
+      window.history.pushState(null, '', `/services#${targetHash}`);
+      window.location.hash = targetHash;
+    }
+
+    if (targetPage.includes('contact') || targetHash.includes('contact')) {
       setCurrentPage('contact');
-    } else if (p.includes('about')) {
+    } else if (targetPage.includes('about') || targetHash.includes('about')) {
       setCurrentPage('about');
-    } else if (p.includes('feature')) {
+    } else if (targetPage.includes('feature') || targetHash.includes('feature')) {
       setCurrentPage('features');
-    } else if (p.includes('service')) {
+    } else if (
+      targetPage.includes('service') ||
+      targetHash.includes('academic-management') ||
+      targetHash.includes('student-management') ||
+      targetHash.includes('hr-finance-management') ||
+      targetHash.includes('exam-management')
+    ) {
       setCurrentPage('services');
     } else {
       setCurrentPage('home');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (!targetHash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
-  // Sync with browser hash if user loads #services, #features, #about, #contact, or #home
+  // Sync with browser hash if user loads #services, #features, #about, #contact, #home or service section hashes
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.toLowerCase();
-      if (hash.includes('contact')) {
+      const path = window.location.pathname.toLowerCase();
+
+      if (hash.includes('contact') || path.includes('contact')) {
         setCurrentPage('contact');
-      } else if (hash.includes('about')) {
+      } else if (hash.includes('about') || path.includes('about')) {
         setCurrentPage('about');
-      } else if (hash.includes('feature')) {
+      } else if (hash.includes('feature') || path.includes('feature')) {
         setCurrentPage('features');
-      } else if (hash.includes('service')) {
+      } else if (
+        hash.includes('service') ||
+        path.includes('service') ||
+        hash.includes('academic-management') ||
+        hash.includes('student-management') ||
+        hash.includes('hr-finance-management') ||
+        hash.includes('exam-management')
+      ) {
         setCurrentPage('services');
       } else if (hash.includes('home') || hash === '' || hash === '#') {
         setCurrentPage('home');
@@ -95,7 +130,7 @@ export const App: React.FC = () => {
 
               {/* 4 Bottom Feature Cards on Home Page */}
               <div id="features-section">
-                <FeatureCards />
+                <FeatureCards onNavigate={handleNavigate} />
               </div>
 
               {/* Group of Students Community Showcase */}
@@ -125,7 +160,10 @@ export const App: React.FC = () => {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
             >
-              <ServicesPage onOpenBooking={handleOpenBooking} />
+              <ServicesPage
+                onOpenBooking={handleOpenBooking}
+                onNavigate={handleNavigate}
+              />
             </motion.div>
           )}
 
@@ -158,10 +196,11 @@ export const App: React.FC = () => {
       {/* Animated Call-to-Action Banner & Main Footer */}
       <Footer onOpenBooking={handleOpenBooking} onNavigate={handleNavigate} />
 
-      {/* Interactive VIP Demo Booking Modal */}
+      {/* Interactive VIP Demo Booking / Contact Form Modal */}
       <BookingModal
         isOpen={isBookingModalOpen}
         onClose={handleCloseBooking}
+        moduleName={bookingModuleName}
       />
 
       {/* Custom Paper Airplane Cursor with Dashed Flight Trail */}

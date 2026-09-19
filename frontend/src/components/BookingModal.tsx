@@ -5,9 +5,10 @@ import { X, CheckCircle2, School, Mail, User, Phone, Sparkles, Loader2 } from 'l
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  moduleName?: string;
 }
 
-export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
+export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, moduleName }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,6 +20,17 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Escape key accessibility
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -117,13 +129,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                 <div className="space-y-1">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">
                     <Sparkles className="w-3.5 h-3.5" />
-                    Interactive ERP Preview
+                    {moduleName ? `${moduleName} Module` : 'Interactive ERP Preview'}
                   </div>
                   <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                    Book a Personalized Demo
+                    {moduleName ? `Inquire: ${moduleName}` : 'Book a Personalized Demo'}
                   </h3>
                   <p className="text-slate-500 text-sm">
-                    Discover how INGO Schools streamlines your academy's administration.
+                    {moduleName
+                      ? `Send an inquiry for ${moduleName} or schedule a personalized walkthrough.`
+                      : "Discover how INGO Schools streamlines your academy's administration."}
                   </p>
                 </div>
 
