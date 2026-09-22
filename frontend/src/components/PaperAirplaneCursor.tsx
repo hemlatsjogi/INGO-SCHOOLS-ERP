@@ -1,25 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
-interface TrailPoint {
-  x: number;
-  y: number;
-  id: number;
-  time: number;
-}
-
-interface ClickRipple {
-  id: number;
-  x: number;
-  y: number;
-}
-
-// Visual dimensions calibrated to exact user origami airplane illustration (cropped 794x745)
-// Apex nose hotspot in crop is at X=785 (98.87%), Y=4 (0.54%)
-const PLANE_WIDTH = 52;
-const PLANE_HEIGHT = Math.round(PLANE_WIDTH * (745 / 794)); // ~49px
-const NOSE_X = Math.round(PLANE_WIDTH * (785 / 794)); // ~51px
-const NOSE_Y = Math.round(PLANE_HEIGHT * (4 / 745)); // ~0px
+// Airplane Dimensions:
+// airplane-cursor-pointing.png aspect ratio: 631 x 851
+const PLANE_WIDTH = 38;
+const PLANE_HEIGHT = Math.round(PLANE_WIDTH * (851 / 631)); // ~51px
+// Apex nose hotspot in pointing orientation: x = 13/631 (~2% from left), y = 1/851 (~0% from top)
+const NOSE_X = Math.round(PLANE_WIDTH * (13 / 631)); // ~1px
+const NOSE_Y = Math.round(PLANE_HEIGHT * (1 / 851)); // ~0px
 
 export const PaperAirplaneCursor: React.FC = () => {
   const [enabled, setEnabled] = useState<boolean>(() => {
@@ -31,20 +18,29 @@ export const PaperAirplaneCursor: React.FC = () => {
   });
 
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-  const [bankingAngle, setBankingAngle] = useState(0);
   const [isHoveringPointer, setIsHoveringPointer] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [trail, setTrail] = useState<TrailPoint[]>([]);
-  const [clickRipples, setClickRipples] = useState<ClickRipple[]>([]);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  // High precision position and physics refs
+  // Position and physics refs for instantaneous tracking without lag
   const currentPos = useRef({ x: -100, y: -100 });
   const targetPos = useRef({ x: -100, y: -100 });
-  const currentBank = useRef(0);
   const animFrameId = useRef<number | null>(null);
-  const pointCounter = useRef(0);
-  const lastTrailTime = useRef(0);
+
+  // Detect touch or coarse pointer devices
+  useEffect(() => {
+    const checkTouch = () => {
+      const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+      const isFine = window.matchMedia('(pointer: fine)').matches;
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      setIsTouchDevice((hasTouch && !isFine) || isCoarse);
+    };
+
+    checkTouch();
+    window.addEventListener('resize', checkTouch);
+    return () => window.removeEventListener('resize', checkTouch);
+  }, []);
 
   // Toggle handler
   const toggleCursor = () => {
@@ -53,9 +49,9 @@ export const PaperAirplaneCursor: React.FC = () => {
     localStorage.setItem('ingo_airplane_cursor', String(next));
   };
 
-  // Sync body cursor classes
+  // Sync body cursor classes - only hide default cursor when custom cursor is active on fine-pointer devices
   useEffect(() => {
-    if (enabled && isVisible) {
+    if (enabled && isVisible && !isTouchDevice) {
       document.documentElement.classList.add('custom-cursor-active');
       document.body.classList.add('custom-cursor-active');
     } else {
@@ -66,10 +62,12 @@ export const PaperAirplaneCursor: React.FC = () => {
       document.documentElement.classList.remove('custom-cursor-active');
       document.body.classList.remove('custom-cursor-active');
     };
-  }, [enabled, isVisible]);
+  }, [enabled, isVisible, isTouchDevice]);
 
   useEffect(() => {
-    // Only activate custom cursor on devices with fine pointer (mouse/trackpad)
+    // Completely disable custom cursor on touch/mobile devices
+    if (isTouchDevice) return;
+
     const isFinePointer = window.matchMedia('(pointer: fine)').matches;
     if (!isFinePointer) return;
 
@@ -87,10 +85,8 @@ export const PaperAirplaneCursor: React.FC = () => {
       }
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
+    const handleMouseDown = () => {
       setIsMouseDown(true);
-      const newRipple: ClickRipple = { id: Date.now(), x: e.clientX, y: e.clientY };
-      setClickRipples((prev) => [...prev.slice(-4), newRipple]);
     };
 
     const handleMouseUp = () => {
@@ -111,43 +107,20 @@ export const PaperAirplaneCursor: React.FC = () => {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
-    // Highly responsive physics animation loop
+    // Highly responsive physics loop (0.85 interpolation factor for ultra-crisp follow without lag)
     const updatePhysics = () => {
-      const now = performance.now();
       const dx = targetPos.current.x - currentPos.current.x;
       const dy = targetPos.current.y - currentPos.current.y;
-      const speed = Math.hypot(dx, dy);
 
-      // Tight interpolation for instantaneous responsiveness with smooth flight feeling
-      currentPos.current.x += dx * 0.72;
-      currentPos.current.y += dy * 0.72;
-
-      // Realistic airplane banking into curves
-      // Tilt slightly when moving left/right or up/down, smoothly easing to rest
-      const targetBank = Math.max(-20, Math.min(20, dx * 0.42 + dy * 0.12));
-      currentBank.current += (targetBank - currentBank.current) * 0.18;
-
-      setMousePos({ x: currentPos.current.x, y: currentPos.current.y });
-      setBankingAngle(currentBank.current);
-
-      // Stream contrail points behind the tail swooshes while in flight
-      if (speed > 2.5 && now - lastTrailTime.current > 38) {
-        lastTrailTime.current = now;
-        pointCounter.current += 1;
-
-        // Tail location relative to plane nose
-        const tailX = currentPos.current.x - NOSE_X + 12;
-        const tailY = currentPos.current.y - NOSE_Y + PLANE_HEIGHT - 6;
-
-        setTrail((prev) => [
-          ...prev.slice(-12),
-          { x: tailX, y: tailY, id: pointCounter.current, time: now },
-        ]);
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        currentPos.current.x = targetPos.current.x;
+        currentPos.current.y = targetPos.current.y;
+      } else {
+        currentPos.current.x += dx * 0.85;
+        currentPos.current.y += dy * 0.85;
       }
 
-      // Expire old trail points
-      setTrail((prev) => prev.filter((pt) => now - pt.time < 450));
-
+      setMousePos({ x: currentPos.current.x, y: currentPos.current.y });
       animFrameId.current = requestAnimationFrame(updatePhysics);
     };
 
@@ -161,17 +134,12 @@ export const PaperAirplaneCursor: React.FC = () => {
       document.removeEventListener('mouseenter', handleMouseEnter);
       if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
     };
-  }, [isVisible]);
+  }, [isVisible, isTouchDevice]);
 
-  // Expire click ripples
-  useEffect(() => {
-    if (clickRipples.length > 0) {
-      const timer = setTimeout(() => {
-        setClickRipples((prev) => prev.slice(1));
-      }, 700);
-      return () => clearTimeout(timer);
-    }
-  }, [clickRipples]);
+  // If touch device, return nothing
+  if (isTouchDevice) {
+    return null;
+  }
 
   return (
     <>
@@ -186,9 +154,9 @@ export const PaperAirplaneCursor: React.FC = () => {
               : 'bg-white/95 text-slate-700 border-slate-200 shadow-slate-900/10 hover:bg-white hover:text-blue-600'
           }`}
         >
-          {/* Mini Airplane Icon matching user's illustration */}
+          {/* Mini Paper Airplane Icon */}
           <img
-            src="/assets/airplane-cursor-cropped.svg"
+            src="/assets/airplane-cursor-pointing.png"
             alt="Airplane Cursor"
             className={`w-4 h-4 object-contain transition-transform duration-300 ${
               enabled ? 'scale-110 drop-shadow-sm' : 'opacity-70 grayscale'
@@ -199,179 +167,40 @@ export const PaperAirplaneCursor: React.FC = () => {
         </button>
       </div>
 
-      {/* Main Airplane Cursor & Interactive Flight Effects */}
+      {/* Main Paper Airplane Cursor - Clean, Lightweight, Accurate, Pointing in Reference Direction */}
       {enabled && isVisible && (
         <div className="fixed inset-0 pointer-events-none z-[99998] overflow-hidden">
-          {/* Dashed Flight Trail & Condensation Stream */}
-          <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
-            {trail.map((pt, i) => {
-              const ageProgress = (performance.now() - pt.time) / 450;
-              const opacity = Math.max(0, 1 - ageProgress) * 0.75;
-              const size = Math.max(1.2, 3.2 * (1 - ageProgress * 0.6));
-              const prevPt = trail[i - 1];
-
-              return (
-                <g key={pt.id}>
-                  {prevPt && (
-                    <line
-                      x1={prevPt.x}
-                      y1={prevPt.y}
-                      x2={pt.x}
-                      y2={pt.y}
-                      stroke="#3B82F6"
-                      strokeWidth="2.2"
-                      strokeDasharray="4 4"
-                      strokeLinecap="round"
-                      opacity={opacity * 0.7}
-                    />
-                  )}
-                  {/* Floating condensation puff */}
-                  <circle
-                    cx={pt.x}
-                    cy={pt.y}
-                    r={size}
-                    fill="#60A5FA"
-                    opacity={opacity}
-                  />
-                </g>
-              );
-            })}
-          </svg>
-
-          {/* Click Burst Shockwaves & Spark Particles */}
-          <AnimatePresence>
-            {clickRipples.map((ripple) => (
-              <React.Fragment key={ripple.id}>
-                {/* Expanding Blue Shockwave Ring */}
-                <motion.div
-                  initial={{ scale: 0.2, opacity: 0.95 }}
-                  animate={{ scale: 2.2, opacity: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.55, ease: 'easeOut' }}
-                  style={{ left: ripple.x, top: ripple.y }}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full border-2 border-blue-500 pointer-events-none shadow-sm"
-                />
-
-                {/* Yellow Spark Particle Burst (matching top spark) */}
-                <motion.div
-                  initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
-                  animate={{ x: -6, y: -20, scale: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: 'easeOut' }}
-                  style={{ left: ripple.x, top: ripple.y }}
-                  className="absolute w-2 h-2 rounded-full bg-amber-400 pointer-events-none shadow-sm"
-                />
-
-                {/* Blue Spark Particle Burst (matching middle spark) */}
-                <motion.div
-                  initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
-                  animate={{ x: 18, y: -14, scale: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: 'easeOut' }}
-                  style={{ left: ripple.x, top: ripple.y }}
-                  className="absolute w-2 h-2 rounded-full bg-blue-500 pointer-events-none shadow-sm"
-                />
-
-                {/* Green Spark Particle Burst (matching right spark) */}
-                <motion.div
-                  initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
-                  animate={{ x: 22, y: 4, scale: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: 'easeOut' }}
-                  style={{ left: ripple.x, top: ripple.y }}
-                  className="absolute w-2 h-2 rounded-full bg-emerald-400 pointer-events-none shadow-sm"
-                />
-              </React.Fragment>
-            ))}
-          </AnimatePresence>
-
           {/* Paper Airplane Cursor Body */}
-          {/* Positioned precisely so that the nose apex is locked to mousePos */}
+          {/* Positioned accurately so that the nose apex is locked to mouse position */}
           <div
             style={{
               transform: `translate3d(${mousePos.x - NOSE_X}px, ${mousePos.y - NOSE_Y}px, 0)`,
               willChange: 'transform',
             }}
-            className="absolute top-0 left-0 transition-opacity duration-150 pointer-events-none"
+            className="absolute top-0 left-0 pointer-events-none transition-opacity duration-150"
           >
             <div
               style={{
-                transform: `rotate(${bankingAngle}deg) scale(${
-                  isMouseDown ? 0.9 : isHoveringPointer ? 1.15 : 1
-                })`,
+                transform: `scale(${isMouseDown ? 0.9 : isHoveringPointer ? 1.08 : 1})`,
                 transformOrigin: `${NOSE_X}px ${NOSE_Y}px`,
-                transition: 'transform 0.12s cubic-bezier(0.2, 0, 0, 1)',
+                transition: 'transform 0.1s cubic-bezier(0.2, 0, 0, 1)',
               }}
               className="relative select-none"
             >
-              {/* Hover Glow Behind Airplane */}
-              {isHoveringPointer && (
-                <div
-                  style={{
-                    width: PLANE_WIDTH + 14,
-                    height: PLANE_HEIGHT + 14,
-                    left: -7,
-                    top: -7,
-                  }}
-                  className="absolute rounded-full bg-blue-400/25 blur-md pointer-events-none animate-pulse"
-                />
-              )}
-
-              {/* Exact Paper Airplane Illustration */}
+              {/* Paper Airplane in Reference Pointing Direction */}
               <img
-                src="/assets/airplane-cursor-cropped.svg"
+                src="/assets/airplane-cursor-pointing.png"
                 alt="Airplane cursor"
                 width={PLANE_WIDTH}
                 height={PLANE_HEIGHT}
                 draggable={false}
-                className={`select-none pointer-events-none transition-all duration-150 ${
-                  isHoveringPointer
-                    ? 'drop-shadow-[0_8px_16px_rgba(37,99,235,0.45)]'
-                    : 'drop-shadow-[0_4px_10px_rgba(15,23,42,0.18)]'
-                }`}
+                className="select-none pointer-events-none drop-shadow-[0_4px_10px_rgba(15,23,42,0.22)]"
                 style={{
                   width: `${PLANE_WIDTH}px`,
                   height: `${PLANE_HEIGHT}px`,
                   display: 'block',
                 }}
               />
-
-              {/* Dynamic Shimmering Sparks when Hovering Clickable Elements */}
-              {isHoveringPointer && (
-                <>
-                  {/* Yellow Top Spark Micro Glow */}
-                  <motion.div
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
-                    transition={{ repeat: Infinity, duration: 0.8 }}
-                    style={{ left: NOSE_X - 4, top: NOSE_Y - 8 }}
-                    className="absolute w-2 h-2 rounded-full bg-amber-400/80 blur-[1px] pointer-events-none"
-                  />
-                  {/* Blue Middle Spark Micro Glow */}
-                  <motion.div
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
-                    transition={{ repeat: Infinity, duration: 0.8, delay: 0.2 }}
-                    style={{ left: NOSE_X + 4, top: NOSE_Y - 4 }}
-                    className="absolute w-2 h-2 rounded-full bg-blue-500/80 blur-[1px] pointer-events-none"
-                  />
-                  {/* Green Right Spark Micro Glow */}
-                  <motion.div
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
-                    transition={{ repeat: Infinity, duration: 0.8, delay: 0.4 }}
-                    style={{ left: NOSE_X + 5, top: NOSE_Y + 6 }}
-                    className="absolute w-2 h-2 rounded-full bg-emerald-400/80 blur-[1px] pointer-events-none"
-                  />
-                </>
-              )}
-
-              {/* Precision Target Dot at Nose Apex (only visible when hovering clickable items) */}
-              {isHoveringPointer && (
-                <div
-                  style={{ left: NOSE_X, top: NOSE_Y }}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                >
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600 ring-1 ring-white" />
-                  </span>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -379,3 +208,5 @@ export const PaperAirplaneCursor: React.FC = () => {
     </>
   );
 };
+
+export default PaperAirplaneCursor;

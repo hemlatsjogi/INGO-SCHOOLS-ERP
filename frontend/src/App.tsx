@@ -12,6 +12,7 @@ import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
 import { PaperAirplaneCursor } from './components/PaperAirplaneCursor';
+import { InitialLoader } from './components/InitialLoader';
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'home' | 'services' | 'features' | 'about' | 'contact'>('home');
@@ -203,8 +204,11 @@ export const App: React.FC = () => {
         moduleName={bookingModuleName}
       />
 
-      {/* Custom Paper Airplane Cursor with Dashed Flight Trail */}
+      {/* Custom Paper Airplane Cursor Pointing in Reference Direction */}
       <PaperAirplaneCursor />
+
+      {/* Unique Modern Origami Paper Airplane Initial Website Loader */}
+      <InitialLoader />
     </div>
   );
 };

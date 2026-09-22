@@ -50,7 +50,12 @@
  stroke-dasharray: 4 4;
  animation: flightTrailDash 1.2s linear infinite;
 }
-/* Custom Paper Airplane Cursor Active State */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Custom Pointer Cursor Active State - only hide default cursor on fine-pointer devices */
 @media (pointer: fine) {
  html.custom-cursor-active,
  html.custom-cursor-active body,
@@ -65,8 +70,9 @@
  }
 }
 /* Fallback paper airplane cursor for browser native pointer */
-.paper-plane-cursor {
- cursor: url('/assets/airplane-cursor-32.svg') 31 1, url('/assets/airplane-cursor-32.png') 31 1, pointer;
+.paper-plane-cursor,
+.hand-pointer-cursor {
+ cursor: url('/assets/airplane-cursor-pointing-32.png') 1 0, url('/assets/airplane-cursor-pointing.png') 1 0, pointer;
 }
 /* =========================================
   INGO FOOTER — PREMIUM CONSTELLATION ARCS

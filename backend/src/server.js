@@ -50,6 +50,7 @@ app.get('/', (req, res) => {
             • <a href="/api/health" style="color: #38bdf8;">/api/health</a> - System Health Status<br/>
             • <a href="/api/features" style="color: #38bdf8;">/api/features</a> - ERP Core Features<br/>
             • <a href="/api/stats" style="color: #38bdf8;">/api/stats</a> - Platform Statistics<br/>
+            • <a href="/api/contact" style="color: #38bdf8;">/api/contact</a> - Contact Form POST API<br/>
             • <a href="/api/inquiries" style="color: #38bdf8;">/api/inquiries</a> - Inquiries POST API
           </div>
         </div>
@@ -67,6 +68,7 @@ app.get('/', (req, res) => {
       health: '/api/health',
       features: '/api/features',
       stats: '/api/stats',
+      contact: '/api/contact',
       inquiries: '/api/inquiries',
       authRegister: '/api/auth/register',
       authLogin: '/api/auth/login'
