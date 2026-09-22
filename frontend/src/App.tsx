@@ -64,7 +64,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#FAFBFF] flex flex-col justify-between selection:bg-blue-600 selection:text-white overflow-hidden">
+    <div className="relative min-h-screen bg-[#FAFBFF] flex flex-col justify-between selection:bg-blue-600 selection:text-white ">
       {/* Ambient Radial Background Lights */}
       <div className="absolute top-0 left-1/4 w-[600px] h-[500px] bg-blue-100/30 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-[500px] h-[500px] bg-sky-100/30 rounded-full blur-[100px] pointer-events-none -z-10" />

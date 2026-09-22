@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 import React, { useState } from 'react';
+=======
+import React, { useState, useEffect } from 'react';
+import ServicesModules from './ServicesModules';
+>>>>>>> Stashed changes
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
@@ -558,6 +563,24 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onOpenBooking }) => 
         </div>
       </section>
 
+<<<<<<< Updated upstream
+=======
+       {/* ====================================================================
+            SERVICES MODULES
+          ==================================================================== */}
+        <ServicesModules />
+
+      {/* ====================================================================
+          4. REUSABLE SERVICE DETAILS POPUP / MODAL
+             (Supports Academic, Student, HR & Finance, Exam, and Transport)
+         ==================================================================== */}
+      <ServiceModal
+        isOpen={!!selectedService}
+        service={selectedService}
+        onClose={handleCloseServiceModal}
+        onExploreModule={handleExploreModule}
+      />
+>>>>>>> Stashed changes
     </div>
   );
 };

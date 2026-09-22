@@ -1,385 +1,485 @@
 /* ==========================================================================
-   INGO-SCHOOLS-ERP: Multi-Tier Responsive Media Queries & Fluid Layouts
-   ========================================================================== */
-
+INGO-SCHOOLS-ERP: Multi-Tier Responsive Media Queries & Fluid Layouts
+========================================================================== */
 /* Root Variables for Fluid Geometry */
 :root {
-  --hero-container-max-width: 1380px;
-  --header-height: 80px;
-  --brand-blue-primary: #1E40AF;
-  --brand-blue-vibrant: #2563EB;
-  --brand-blue-glow: rgba(37, 99, 235, 0.25);
-  --flight-path-stroke: #3B82F6;
+--hero-container-max-width: 1380px;
+--header-height: 80px;
+--brand-blue-primary: #1E40AF;
+--brand-blue-vibrant: #2563EB;
+--brand-blue-glow: rgba(37, 99, 235, 0.25);
+--flight-path-stroke: #3B82F6;
 }
-
 /* --------------------------------------------------------------------------
-   1. Extra Small Devices / Portrait Phones (<= 480px)
-   -------------------------------------------------------------------------- */
+1. Extra Small Devices / Portrait Phones (<= 480px)
+-------------------------------------------------------------------------- */
 @media screen and (max-width: 480px) {
-  .ingo-nav-container {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-    height: 70px !important;
-  }
-
-  .ingo-hero-container {
-    padding-top: 1.5rem !important;
-    padding-bottom: 2rem !important;
-  }
-
-  .ingo-hero-title {
-    font-size: 2.15rem !important;
-    line-height: 1.15 !important;
-    letter-spacing: -0.025em !important;
-  }
-
-  .ingo-hero-subtitle {
-    font-size: 0.95rem !important;
-    line-height: 1.55 !important;
-  }
-
-  .ingo-hero-cta-group {
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 0.75rem !important;
-  }
-
-  .ingo-hero-cta-group button,
-  .ingo-hero-cta-group a {
-    width: 100% !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-
-  .ingo-hero-image-wrapper {
-    margin-top: 2rem !important;
-    max-width: 320px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .ingo-feature-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-
-  .ingo-feature-card {
-    padding: 1.25rem 1rem !important;
-  }
-
-  /* Paper Airplane scaled for small viewport */
-  .ingo-airplane-svg-container {
-    transform: scale(0.72) !important;
-    transform-origin: top right !important;
-  }
+.ingo-nav-container {
+padding-left: 1rem !important;
+padding-right: 1rem !important;
+height: 70px !important;
 }
-
+.ingo-hero-container {
+padding-top: 1.5rem !important;
+padding-bottom: 2rem !important;
+}
+.ingo-hero-title {
+font-size: 2.15rem !important;
+line-height: 1.15 !important;
+letter-spacing: -0.025em !important;
+}
+.ingo-hero-subtitle {
+font-size: 0.95rem !important;
+line-height: 1.55 !important;
+}
+.ingo-hero-cta-group {
+flex-direction: column !important;
+width: 100% !important;
+gap: 0.75rem !important;
+}
+.ingo-hero-cta-group button,
+.ingo-hero-cta-group a {
+width: 100% !important;
+justify-content: center !important;
+text-align: center !important;
+}
+.ingo-hero-image-wrapper {
+margin-top: 2rem !important;
+max-width: 320px !important;
+margin-left: auto !important;
+margin-right: auto !important;
+}
+.ingo-feature-grid {
+grid-template-columns: 1fr !important;
+gap: 1rem !important;
+}
+.ingo-feature-card {
+padding: 1.25rem 1rem !important;
+}
+/* Paper Airplane scaled for small viewport */
+.ingo-airplane-svg-container {
+transform: scale(0.72) !important;
+transform-origin: top right !important;
+}
+}
 /* --------------------------------------------------------------------------
-   2. Small to Medium Mobile / Phablets (481px to 640px)
-   -------------------------------------------------------------------------- */
+2. Small to Medium Mobile / Phablets (481px to 640px)
+-------------------------------------------------------------------------- */
 @media screen and (min-width: 481px) and (max-width: 640px) {
-  .ingo-hero-title {
-    font-size: 2.6rem !important;
-    line-height: 1.18 !important;
-  }
-
-  .ingo-hero-subtitle {
-    font-size: 1.05rem !important;
-  }
-
-  .ingo-hero-cta-group {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-  }
-
-  .ingo-feature-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-
-  .ingo-airplane-svg-container {
-    transform: scale(0.85) !important;
-    transform-origin: top right !important;
-  }
+.ingo-hero-title {
+font-size: 2.6rem !important;
+line-height: 1.18 !important;
 }
-
+.ingo-hero-subtitle {
+font-size: 1.05rem !important;
+}
+.ingo-hero-cta-group {
+flex-direction: row !important;
+flex-wrap: wrap !important;
+}
+.ingo-feature-grid {
+grid-template-columns: 1fr !important;
+gap: 1rem !important;
+}
+.ingo-airplane-svg-container {
+transform: scale(0.85) !important;
+transform-origin: top right !important;
+}
+}
 /* --------------------------------------------------------------------------
-   3. Tablets / Portrait IPads (641px to 768px)
-   -------------------------------------------------------------------------- */
+3. Tablets / Portrait IPads (641px to 768px)
+-------------------------------------------------------------------------- */
 @media screen and (min-width: 641px) and (max-width: 768px) {
-  .ingo-hero-title {
-    font-size: 3rem !important;
-    line-height: 1.15 !important;
-  }
-
-  .ingo-hero-subtitle {
-    font-size: 1.1rem !important;
-  }
-
-  .ingo-feature-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1.25rem !important;
-  }
-
-  .ingo-hero-grid {
-    grid-template-columns: 1fr !important;
-    text-align: center !important;
-  }
-
-  .ingo-hero-text-align {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    max-width: 600px !important;
-  }
-
-  .ingo-hero-cta-group {
-    justify-content: center !important;
-  }
-
-  .ingo-airplane-svg-container {
-    transform: scale(0.9) !important;
-  }
+.ingo-hero-title {
+font-size: 3rem !important;
+line-height: 1.15 !important;
 }
-
+.ingo-hero-subtitle {
+font-size: 1.1rem !important;
+}
+.ingo-feature-grid {
+grid-template-columns: repeat(2, 1fr) !important;
+gap: 1.25rem !important;
+}
+.ingo-hero-grid {
+grid-template-columns: 1fr !important;
+text-align: center !important;
+}
+.ingo-hero-text-align {
+margin-left: auto !important;
+margin-right: auto !important;
+max-width: 600px !important;
+}
+.ingo-hero-cta-group {
+justify-content: center !important;
+}
+.ingo-airplane-svg-container {
+transform: scale(0.9) !important;
+}
+}
 /* --------------------------------------------------------------------------
-   4. Medium Tablets / Small Laptops (769px to 1024px)
-   -------------------------------------------------------------------------- */
+4. Medium Tablets / Small Laptops (769px to 1024px)
+-------------------------------------------------------------------------- */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-  .ingo-hero-title {
-    font-size: 3.4rem !important;
-    line-height: 1.12 !important;
-  }
-
-  .ingo-feature-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1.25rem !important;
-  }
-
-  .ingo-hero-grid {
-    grid-template-columns: 1.1fr 0.9fr !important;
-  }
-
-  .ingo-airplane-svg-container {
-    transform: scale(0.95) !important;
-  }
+.ingo-hero-title {
+font-size: 3.4rem !important;
+line-height: 1.12 !important;
 }
-
+.ingo-feature-grid {
+grid-template-columns: repeat(2, 1fr) !important;
+gap: 1.25rem !important;
+}
+.ingo-hero-grid {
+grid-template-columns: 1.1fr 0.9fr !important;
+}
+.ingo-airplane-svg-container {
+transform: scale(0.95) !important;
+}
+}
 /* --------------------------------------------------------------------------
-   5. Standard Desktops / Laptops (1025px to 1440px)
-   -------------------------------------------------------------------------- */
+5. Standard Desktops / Laptops (1025px to 1440px)
+-------------------------------------------------------------------------- */
 @media screen and (min-width: 1025px) and (max-width: 1440px) {
-  .ingo-hero-title {
-    font-size: 3.9rem !important;
-    line-height: 1.1 !important;
-  }
-
-  .ingo-feature-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 1.25rem !important;
-  }
-
-  .ingo-hero-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
-
-  .ingo-airplane-svg-container {
-    transform: scale(1) !important;
-  }
+.ingo-hero-title {
+font-size: 3.9rem !important;
+line-height: 1.1 !important;
 }
-
+.ingo-feature-grid {
+grid-template-columns: repeat(4, 1fr) !important;
+gap: 1.25rem !important;
+}
+.ingo-hero-grid {
+grid-template-columns: 1fr 1fr !important;
+}
+.ingo-airplane-svg-container {
+transform: scale(1) !important;
+}
+}
 /* --------------------------------------------------------------------------
-   6. Large Screens & 4K Displays (>= 1441px)
-   -------------------------------------------------------------------------- */
+6. Large Screens & 4K Displays (>= 1441px)
+-------------------------------------------------------------------------- */
 @media screen and (min-width: 1441px) {
-  .ingo-hero-container {
-    max-width: 1440px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .ingo-hero-title {
-    font-size: 4.5rem !important;
-    line-height: 1.08 !important;
-  }
-
-  .ingo-hero-subtitle {
-    font-size: 1.25rem !important;
-    max-width: 580px !important;
-  }
-
-  .ingo-feature-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 1.5rem !important;
-  }
+.ingo-hero-container {
+max-width: 1440px !important;
+margin-left: auto !important;
+margin-right: auto !important;
 }
-
+.ingo-hero-title {
+font-size: 4.5rem !important;
+line-height: 1.08 !important;
+}
+.ingo-hero-subtitle {
+font-size: 1.25rem !important;
+max-width: 580px !important;
+}
+.ingo-feature-grid {
+grid-template-columns: repeat(4, 1fr) !important;
+gap: 1.5rem !important;
+}
+}
 /* --------------------------------------------------------------------------
-   7. Feature Showcase Mobile Optimization (<= 640px)
-   -------------------------------------------------------------------------- */
+7. Feature Showcase Mobile Optimization (<= 640px)
+-------------------------------------------------------------------------- */
 @media screen and (max-width: 640px) {
-  #features-section {
-    padding-top: 2rem !important;
-    padding-bottom: 2.5rem !important;
-  }
-
-  #features-section .bg-white\/95.rounded-2xl {
-    min-width: unset !important;
-    width: 90% !important;
-    max-width: 290px !important;
-  }
-
-  /* Ensure cardlets on mobile wrap gracefully if needed */
-  #features-section .group .shrink-0 {
-    margin-top: 0.5rem;
-  }
+#features-section {
+padding-top: 2rem !important;
+padding-bottom: 2.5rem !important;
 }
-
+#features-section .bg-white\/95.rounded-2xl {
+min-width: unset !important;
+width: 90% !important;
+max-width: 290px !important;
+}
+/* Ensure cardlets on mobile wrap gracefully if needed */
+#features-section .group .shrink-0 {
+margin-top: 0.5rem;
+}
+}
 /* --------------------------------------------------------------------------
-   8. About Section Multi-Media Query Breakpoints
-   -------------------------------------------------------------------------- */
-
+8. About Section Multi-Media Query Breakpoints
+-------------------------------------------------------------------------- */
 /* Extra Small Phones (<= 480px) */
 @media screen and (max-width: 480px) {
-  .ingo-about-container {
-    padding-top: 1rem !important;
-    padding-bottom: 2rem !important;
-  }
-
-  .ingo-about-container h1 {
-    font-size: 2.15rem !important;
-    line-height: 1.15 !important;
-  }
-
-  .ingo-about-container h2 {
-    font-size: 1.85rem !important;
-    line-height: 1.2 !important;
-  }
-
-  /* Overlapping photos in Our Story stack cleanly */
-  #our-story .grid-cols-1.sm\:grid-cols-2 {
-    gap: 1rem !important;
-  }
-
-  #our-story img {
-    height: 200px !important;
-  }
-
-  /* Sticky note scales down on small screens */
-  .ingo-about-container .max-w-\[170px\],
-  .ingo-about-container .sm\:max-w-\[190px\] {
-    max-width: 145px !important;
-    padding: 0.75rem !important;
-    bottom: 0.5rem !important;
-    right: 0.5rem !important;
-  }
+.ingo-about-container {
+padding-top: 1rem !important;
+padding-bottom: 2rem !important;
 }
-
+.ingo-about-container h1 {
+font-size: 2.15rem !important;
+line-height: 1.15 !important;
+}
+.ingo-about-container h2 {
+font-size: 1.85rem !important;
+line-height: 1.2 !important;
+}
+/* Overlapping photos in Our Story stack cleanly */
+#our-story .grid-cols-1.sm\:grid-cols-2 {
+gap: 1rem !important;
+}
+#our-story img {
+height: 200px !important;
+}
+/* Sticky note scales down on small screens */
+.ingo-about-container .max-w-\[170px\],
+.ingo-about-container .sm\:max-w-\[190px\] {
+max-width: 145px !important;
+padding: 0.75rem !important;
+bottom: 0.5rem !important;
+right: 0.5rem !important;
+}
+}
 /* Phablets & Small Tablets (481px - 768px) */
 @media screen and (min-width: 481px) and (max-width: 768px) {
-  .ingo-about-container h1 {
-    font-size: 2.75rem !important;
-    line-height: 1.15 !important;
-  }
-
-  .ingo-about-container h2 {
-    font-size: 2.25rem !important;
-  }
-
-  #our-story img {
-    height: 240px !important;
-  }
+.ingo-about-container h1 {
+font-size: 2.75rem !important;
+line-height: 1.15 !important;
 }
-
+.ingo-about-container h2 {
+font-size: 2.25rem !important;
+}
+#our-story img {
+height: 240px !important;
+}
+}
 /* Medium Tablets & Laptops (769px - 1024px) */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-  .ingo-about-container h1 {
-    font-size: 3.35rem !important;
-  }
-
-  .ingo-about-container h2 {
-    font-size: 2.65rem !important;
-  }
+.ingo-about-container h1 {
+font-size: 3.35rem !important;
 }
-
+.ingo-about-container h2 {
+font-size: 2.65rem !important;
+}
+}
 /* Ultra-Wide Displays (>= 1441px) */
 @media screen and (min-width: 1441px) {
-  .ingo-about-container {
-    max-width: 1440px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .ingo-about-container h1 {
-    font-size: 4.25rem !important;
-  }
+.ingo-about-container {
+max-width: 1440px !important;
+margin-left: auto !important;
+margin-right: auto !important;
 }
-
+.ingo-about-container h1 {
+font-size: 4.25rem !important;
+}
+}
 /* --------------------------------------------------------------------------
-   9. Contact Page Multi-Media Query Breakpoints
-   -------------------------------------------------------------------------- */
-
+9. Contact Page Multi-Media Query Breakpoints
+-------------------------------------------------------------------------- */
 /* Extra Small Phones (<= 480px) */
 @media screen and (max-width: 480px) {
-  .ingo-contact-container {
-    padding-top: 1rem !important;
-    padding-bottom: 2rem !important;
-  }
-
-  .ingo-contact-container h1 {
-    font-size: 2.15rem !important;
-    line-height: 1.15 !important;
-  }
-
-  .ingo-contact-container h2 {
-    font-size: 1.75rem !important;
-  }
-
-  .ingo-contact-container form {
-    padding: 0 !important;
-  }
+.ingo-contact-container {
+padding-top: 1rem !important;
+padding-bottom: 2rem !important;
 }
-
+.ingo-contact-container h1 {
+font-size: 2.15rem !important;
+line-height: 1.15 !important;
+}
+.ingo-contact-container h2 {
+font-size: 1.75rem !important;
+}
+.ingo-contact-container form {
+padding: 0 !important;
+}
+}
 /* Phablets & Small Tablets (481px - 768px) */
 @media screen and (min-width: 481px) and (max-width: 768px) {
-  .ingo-contact-container h1 {
-    font-size: 2.75rem !important;
-  }
+.ingo-contact-container h1 {
+font-size: 2.75rem !important;
 }
-
+}
 /* Medium Tablets & Laptops (769px - 1024px) */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-  .ingo-contact-container h1 {
-    font-size: 3.35rem !important;
-  }
+.ingo-contact-container h1 {
+font-size: 3.35rem !important;
 }
-
+}
 /* Ultra-Wide Displays (>= 1441px) */
 @media screen and (min-width: 1441px) {
-  .ingo-contact-container {
-    max-width: 1440px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .ingo-contact-container h1 {
-    font-size: 4.25rem !important;
-  }
+.ingo-contact-container {
+max-width: 1440px !important;
+margin-left: auto !important;
+margin-right: auto !important;
 }
-
+.ingo-contact-container h1 {
+font-size: 4.25rem !important;
+}
+}
 /* --------------------------------------------------------------------------
-   10. Accessibility: Reduced Motion Support
-   -------------------------------------------------------------------------- */
+10. Accessibility: Reduced Motion Support
+-------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .ingo-airplane-motion {
-    animation: none !important;
-  }
+*,
+::before,
+::after {
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+scroll-behavior: auto !important;
+}
+.ingo-airplane-motion {
+animation: none !important;
+}
+}
+/* =========================================
+FOOTER ORBITS — RESPONSIVE
+========================================= */
+@media screen and (max-width: 640px) {
+.footer-arc {
+top: 74%;
+}
+.footer-arc-blue {
+width: 650px;
+height: 170px;
+}
+.footer-arc-teal {
+width: 540px;
+height: 220px;
+}
+.footer-arc-gold {
+width: 430px;
+height: 150px;
+}
+.footer-arc-violet {
+width: 330px;
+height: 190px;
+}
+}
+/* =========================================================
+NEXT: FOOTER MOBILE RESPONSIVE
+========================================================= */
+@media screen and (max-width: 768px) {
+.footer-motion {
+height: 100%;
+}
+.footer-arc {
+left: 50%;
+top: 72%;
+transform-origin: center;
+}
+.footer-arc-blue {
+width: 650px;
+height: 180px;
+}
+.footer-arc-teal {
+width: 560px;
+height: 210px;
+}
+.footer-arc-gold {
+width: 470px;
+height: 160px;
+}
+.footer-arc-violet {
+width: 380px;
+height: 190px;
+}
+}
+@media screen and (max-width: 480px) {
+.footer-arc-blue {
+width: 520px;
+height: 150px;
+}
+.footer-arc-teal {
+width: 440px;
+height: 175px;
+}
+.footer-arc-gold {
+width: 370px;
+height: 135px;
+}
+.footer-arc-violet {
+width: 300px;
+height: 155px;
+}
+}
+/* =========================================================
+NEXT: GLOBAL MOBILE SAFETY
+========================================================= */
+@media screen and (max-width: 768px) {
+html,
+body {
+max-width: 100%;
+overflow-x: hidden;
+}
+#root {
+width: 100%;
+max-width: 100%;
+overflow-x: hidden;
+}
+img,
+video,
+svg {
+max-width: 100%;
+}
+}
+/* =========================================================
+NEXT: TABLET SPACING FIX
+========================================================= */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+.max-w-7xl {
+padding-left: 28px;
+padding-right: 28px;
+}
+section {
+max-width: 100%;
+}
+h1,
+h2,
+h3 {
+max-width: 100%;
+}
+}
+/* =========================================================
+NEXT: INTERACTIVE FEATURE SHOWCASE — MOBILE FIX
+========================================================= */
+@media screen and (max-width: 640px) {
+.ingo-airplane-svg-container {
+max-width: 100%;
+overflow: visible;
+}
+#features-section .min-w-\[240px\] {
+min-width: 0 !important;
+width: calc(100% - 20px) !important;
+max-width: 270px !important;
+}
+#features-section .w-\[290px\] {
+width: 250px !important;
+}
+}
+/* =========================================================
+NEXT: SMALL MOBILE TYPOGRAPHY
+========================================================= */
+@media screen and (max-width: 480px) {
+body {
+ font-size: 14px;
+}
+h1 {
+ font-size: clamp(32px, 10vw, 44px);
+ line-height: 1.05;
+}
+h2 {
+ font-size: clamp(28px, 8vw, 38px);
+ line-height: 1.1;
+}
+h3 {
+ line-height: 1.2;
+}
+p {
+ line-height: 1.6;
+}
+button {
+ max-width: 100%;
+}
+}
+/* NEXT */
+@media screen and (max-width: 768px) {
+.footer-motion,
+.footer-arc {
+  pointer-events: none;
+}
+.footer-arc {
+  max-width: none;
+}
+footer {
+  overflow: hidden;
+}
 }
