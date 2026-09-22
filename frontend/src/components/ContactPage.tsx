@@ -12,7 +12,10 @@ import {
   ChevronDown,
   Building,
   User,
-  MessageSquare
+  MessageSquare,
+  AlertCircle,
+  FileText,
+  X
 } from 'lucide-react';
 
 interface ContactPageProps {
@@ -42,12 +45,25 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
     schoolName: '',
     role: 'Principal / Administrator',
     studentCount: '500 - 1,500',
+    subject: '',
     message: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [ticketId, setTicketId] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string>('');
+
+  // Auto-dismiss success popup after exactly 10 seconds
+  React.useEffect(() => {
+    if (submitted) {
+      const timer = setTimeout(() => {
+        setSubmitted(false);
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitted]);
 
   // Auto-scroll to contact form if hash is present
   React.useEffect(() => {
@@ -107,36 +123,169 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setErrorMessage(null);
 
-    // Generate random friendly reference ticket ID
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+
+    // Frontend Validations
+    if (!trimmedName || trimmedName.length < 2) {
+      setErrorMessage('Please enter your full name (minimum 2 characters).');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    const phoneRegex = /^[1-9]\d{9}$/;
+    const cleanPhone = formData.phone.replace(/\D/g, '');
+    if (!cleanPhone || !phoneRegex.test(cleanPhone)) {
+      setErrorMessage('Please enter a valid 10-digit Indian mobile number (cannot start with 0).');
+      return;
+    }
+
+    if (!trimmedMessage || trimmedMessage.length < 3) {
+      setErrorMessage('Please enter a message describing your requirements.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitted(false);
+
+    // Friendly fallback ticket ID
     const randomTicket = `INGO-${Math.floor(100000 + Math.random() * 900000)}`;
 
     try {
-      // Send inquiry to backend if running
-      await fetch('http://localhost:5000/api/inquiries', {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          name: trimmedName,
+          email: trimmedEmail,
+          phone: cleanPhone,
+          message: trimmedMessage,
           ticketId: randomTicket
         })
-      }).catch(() => {
-        // Fallback gracefully if backend is offline
       });
-    } catch {
-      // Ignore network errors on local demo
-    }
 
-    setTimeout(() => {
+      const data = await response.json().catch(() => null);
+
+      if (response.ok && data?.success) {
+        setSubmitted(true);
+        setTicketId(data.ticketId || randomTicket);
+        setSuccessMessage(data.message || 'Thank you! Your message has been sent successfully. We will contact you soon.');
+        // Clear/reset form fields after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          schoolName: '',
+          role: 'Principal / Administrator',
+          studentCount: '500 - 1,500',
+          subject: '',
+          message: ''
+        });
+      } else {
+        setSubmitted(false);
+        setErrorMessage(
+          data?.message || 'Something went wrong. Please try again or contact us directly.'
+        );
+      }
+    } catch {
+      setSubmitted(false);
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+    } finally {
       setIsSubmitting(false);
-      setSubmitted(true);
-      setTicketId(randomTicket);
-    }, 900);
+    }
   };
 
   return (
     <div className="ingo-contact-container w-full space-y-16 sm:space-y-24 lg:space-y-28 py-4 sm:py-8 select-none">
+      
+      {/* ====================================================================
+          FULL-SCREEN SUCCESS POPUP MODAL (AUTO-DISMISSES AFTER 10 SECONDS)
+         ==================================================================== */}
+      <AnimatePresence>
+        {submitted && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+            {/* Backdrop with Soft Dark Blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSubmitted(false)}
+              className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
+            />
+
+            {/* Modal Dialog Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 sm:p-8 text-center overflow-hidden z-10 space-y-5"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setSubmitted(false)}
+                className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Animated Success Checkmark Badge */}
+              <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+                <CheckCircle2 className="w-9 h-9" />
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                  Thank you!
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed max-w-sm mx-auto">
+                  {successMessage || "Your message has been sent successfully. We will contact you soon."}
+                </p>
+              </div>
+
+              {/* Reference Ticket ID Box */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl py-3 px-4 text-xs text-slate-600 space-y-0.5">
+                <div>
+                  <span>Reference Ticket ID: </span>
+                  <strong className="font-mono text-blue-600 font-bold text-sm ml-1">{ticketId}</strong>
+                </div>
+                <p className="text-[11px] text-slate-400">An INGO Schools specialist will reach out within 15 minutes.</p>
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setSubmitted(false)}
+                  className="w-full py-3 px-6 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/20 active:scale-95 transition-all cursor-pointer"
+                >
+                  Got It
+                </button>
+              </div>
+
+              {/* 10-Second Auto-dismiss Progress Bar Indicator */}
+              <motion.div
+                initial={{ width: '100%' }}
+                animate={{ width: '0%' }}
+                transition={{ duration: 10, ease: 'linear' }}
+                className="absolute bottom-0 left-0 h-1.5 bg-emerald-500"
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
       
       {/* ====================================================================
           SECTION 1: HERO HEADER
@@ -224,10 +373,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </div>
               <div className="space-y-1 pt-1">
                 <a
-                  href="mailto:support@ingoschools.com"
+                  href="mailto:Ingoschoolerp@gmail.com"
                   className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors block"
                 >
-                  support@ingoschools.com
+                  Ingoschoolerp@gmail.com
                 </a>
                 <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full inline-block">
                   ⚡ Avg. response &lt; 15 mins
@@ -256,7 +405,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                  Toll-Free Helpline
+                  Phone Support
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                   Mon &ndash; Sat from 8:00 AM to 7:00 PM IST.
@@ -264,10 +413,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </div>
               <div className="space-y-1 pt-1">
                 <a
-                  href="tel:18002664646"
+                  href="tel:+919981966037"
                   className="text-sm font-bold text-slate-900 hover:text-emerald-600 transition-colors block"
                 >
-                  +91 1800-266-4646
+                  99819 66037
                 </a>
                 <span className="text-[11px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block">
                   📞 Dedicated School ERP Team
@@ -275,7 +424,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </div>
             </div>
             <div className="pt-5 border-t border-slate-50 flex items-center justify-between text-xs font-bold text-emerald-600">
-              <span>Call toll-free</span>
+              <span>Call direct</span>
               <span className="group-hover:translate-x-1.5 transition-transform duration-200">&rarr;</span>
             </div>
           </motion.div>
@@ -296,15 +445,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-slate-900 group-hover:text-purple-600 transition-colors">
-                  Innovation Hubs
+                  Office Location
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                  Bangalore HQ &bull; New Delhi &bull; Mumbai Hubs
+                  Nagpur, Maharashtra, India
                 </p>
               </div>
               <div className="space-y-1 pt-1">
                 <p className="text-xs font-semibold text-slate-700 leading-snug">
-                  Level 6, Brigade Tech Park, Whitefield, Bangalore, Karnataka 560066
+                  Subhagya Nagar, Hudkeshwar Road, Nagpur, Maharashtra, India
                 </p>
                 <span className="text-[11px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full inline-block">
                   📍 Campus Visits Welcome
@@ -312,7 +461,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </div>
             </div>
             <div className="pt-5 border-t border-slate-50 flex items-center justify-between text-xs font-bold text-purple-600">
-              <span>View locations</span>
+              <span>Visit office</span>
               <span className="group-hover:translate-x-1.5 transition-transform duration-200">&rarr;</span>
             </div>
           </motion.div>
@@ -346,23 +495,19 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               </p>
             </div>
 
-            {/* Submission Confirmation Alert */}
+            {/* Submission Failure / Validation Error Alert */}
             <AnimatePresence>
-              {submitted && (
+              {errorMessage && (
                 <motion.div
                   initial={{ opacity: 0, height: 0, scale: 0.95 }}
                   animate={{ opacity: 1, height: 'auto', scale: 1 }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mb-6 p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-start gap-3.5"
+                  className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 flex items-start gap-3"
                 >
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <p className="text-sm font-bold">
-                      Thank you! Your inquiry has been received.
-                    </p>
-                    <p className="text-xs text-emerald-700 leading-relaxed">
-                      Reference Ticket ID: <strong className="font-mono">{ticketId}</strong>. An INGO Schools campus specialist will reach out to you within 15 minutes.
-                    </p>
+                  <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-bold">Unable to Send Message</p>
+                    <p className="text-xs text-red-700 leading-relaxed">{errorMessage}</p>
                   </div>
                 </motion.div>
               )}
@@ -411,13 +556,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-slate-700">
-                    School / Institution Name *
+                    School / Institution Name
                   </label>
                   <div className="relative">
                     <Building className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
                       type="text"
-                      required
                       placeholder="e.g. Greenwood International School"
                       value={formData.schoolName}
                       onChange={(e) => setFormData({ ...formData, schoolName: e.target.value })}
@@ -431,14 +575,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
                     Mobile Number *
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <div className="absolute left-3.5 top-2.5 flex items-center gap-1.5 text-slate-500 font-bold border-r border-slate-200 pr-2">
+                      <span className="text-sm">+91</span>
+                    </div>
                     <input
-                      type="tel"
+                      type="text"
+                      maxLength={10}
                       required
-                      placeholder="e.g. +91 98765 43210"
+                      placeholder="10-digit mobile number"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '');
+                        if (val.length <= 10) {
+                          setFormData({ ...formData, phone: val });
+                        }
+                      }}
+                      className="w-full pl-[4.5rem] pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
                     />
                   </div>
                 </div>
@@ -490,15 +642,33 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
                 </div>
               </div>
 
+              {/* Row 5: Subject Field */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-700">
+                  Subject
+                </label>
+                <div className="relative">
+                  <FileText className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <input
+                    type="text"
+                    placeholder="e.g. ERP Demonstration & Pricing Inquiry"
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+
               {/* Message Box */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-slate-700">
-                  How can we help your campus?
+                  How can we help your campus? *
                 </label>
                 <div className="relative">
                   <MessageSquare className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   <textarea
                     rows={3}
+                    required
                     placeholder="Tell us what modules you are looking for (e.g. Fee Management, Biometric Attendance, Parent App, Report Cards)..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
