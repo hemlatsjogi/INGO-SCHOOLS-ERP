@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,6 +11,20 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBooking }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 35);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const navLinks = [
     { name: 'Home', page: 'home', href: '#home' },
     { name: 'Services', page: 'services', href: '#services' },
@@ -20,27 +34,42 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all">
+    <header 
+      className={`ingo-navbar ${
+    isScrolled ? 'ingo-navbar-scrolled' : ''
+    }`}>
       <div className="ingo-nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         {/* Brand Logo matching the original image */}
-        <a
+       <a
           href="#home"
           onClick={(e) => {
             e.preventDefault();
             onNavigate('home');
           }}
-          className="flex items-center gap-3 group cursor-pointer"
+          className={`ingo-brand ${isScrolled ? 'is-scrolled' : ''}`}
         >
-          <img
-            src="/assets/ingo-schools-logo.svg"
-            alt="INGO SCHOOLS"
-            className="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
+          <div className="ingo-logo-wrapper">
+
+            {/* Crown */}
+            <img
+              src="/assets/ingo school crown.png"
+              alt="school crown"
+              className="ingo-crown"
+            />
+
+            {/* Text */}
+            <img
+              src="/assets/ingo school text.png"
+              alt="INGO SCHOOLS"
+              className="ingo-logo-text"
+            />
+
+          </div>
         </a>
 
         {/* Center Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 lg:gap-10">
+        <nav className="ingo-nav-links hidden md:flex items-center">
           {navLinks.map((link) => {
             const isActive = activePage.toLowerCase() === link.page.toLowerCase();
             return (
@@ -51,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
                   e.preventDefault();
                   onNavigate(link.page);
                 }}
-                className={`relative py-1 text-[15px] font-medium transition-colors duration-200 cursor-pointer ${
+                className={` ingo-nav-link relative cursor-pointer ${
                   isActive ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -69,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
         </nav>
 
         {/* Right CTA Button (Book Now ->) */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="ingo-nav-right hidden md:flex items-center">
           <button
             id="book-now-btn"
             onClick={onOpenBooking}
