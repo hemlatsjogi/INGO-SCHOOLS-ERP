@@ -1,83 +1,274 @@
 @import './responsive.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
-  body {
-    background-color: #F8FAFC;
-    color: #0F172A;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-  }
+ body {
+   background-color: #F8FAFC;
+   color: #0F172A;
+   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+   overflow-x: hidden;
+   margin: 0;
+   padding: 0;
+ }
 }
-
 /* Glassmorphism utility */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+ background: rgba(255, 255, 255, 0.85);
+ backdrop-filter: blur(12px);
+ -webkit-backdrop-filter: blur(12px);
+ border: 1px solid rgba(255, 255, 255, 0.6);
 }
-
 /* Doodle Underline SVG Animation */
 .doodle-stroke {
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: drawStroke 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.4s;
+ stroke-dasharray: 200;
+ stroke-dashoffset: 200;
+ animation: drawStroke 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.4s;
 }
-
 @keyframes drawStroke {
-  to {
-    stroke-dashoffset: 0;
-  }
+ to {
+   stroke-dashoffset: 0;
+ }
 }
-
 /* Soft Glow Background Elements */
 .ambient-glow-blue {
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+ background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
 }
-
 .ambient-glow-cyan {
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.09) 0%, rgba(248, 250, 252, 0) 70%);
+ background: radial-gradient(circle, rgba(6, 182, 212, 0.09) 0%, rgba(248, 250, 252, 0) 70%);
 }
-
 /* Custom Dotted Flight Trail Animation */
 @keyframes flightTrailDash {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -40;
-  }
+ 0% {
+   stroke-dashoffset: 0;
+ }
+ 100% {
+   stroke-dashoffset: -40;
+ }
 }
-
 .flight-trail-animated {
-  stroke-dasharray: 4 4;
-  animation: flightTrailDash 1.2s linear infinite;
+ stroke-dasharray: 4 4;
+ animation: flightTrailDash 1.2s linear infinite;
 }
-
 /* Custom Paper Airplane Cursor Active State */
 @media (pointer: fine) {
-  html.custom-cursor-active,
-  html.custom-cursor-active body,
-  html.custom-cursor-active a,
-  html.custom-cursor-active button,
-  html.custom-cursor-active input,
-  html.custom-cursor-active select,
-  html.custom-cursor-active textarea,
-  html.custom-cursor-active [role="button"],
-  html.custom-cursor-active .cursor-pointer {
-    cursor: none !important;
-  }
+ html.custom-cursor-active,
+ html.custom-cursor-active body,
+ html.custom-cursor-active a,
+ html.custom-cursor-active button,
+ html.custom-cursor-active input,
+ html.custom-cursor-active select,
+ html.custom-cursor-active textarea,
+ html.custom-cursor-active [role="button"],
+ html.custom-cursor-active .cursor-pointer {
+   cursor: none !important;
+ }
 }
-
 /* Fallback paper airplane cursor for browser native pointer */
 .paper-plane-cursor {
-  cursor: url('/assets/airplane-cursor-32.svg') 31 1, url('/assets/airplane-cursor-32.png') 31 1, pointer;
+ cursor: url('/assets/airplane-cursor-32.svg') 31 1, url('/assets/airplane-cursor-32.png') 31 1, pointer;
 }
-
-
+/* =========================================
+  INGO FOOTER — PREMIUM CONSTELLATION ARCS
+========================================= */
+.footer-motion {
+ position: absolute;
+ inset: 0;
+ overflow: hidden;
+ pointer-events: none;
+ z-index: 0;
+}
+/* =========================================
+  BASE ARC
+========================================= */
+.footer-arc {
+ position: absolute;
+ left: 50%;
+ top: 72%;
+ border: 1.5px solid;
+ border-radius: 50%;
+ transform-origin: center;
+ pointer-events: none;
+ will-change: transform, opacity, filter;
+}
+/* =========================================
+  BLUE
+========================================= */
+.footer-arc-blue {
+ border-color: rgba(29, 105, 246, 0.792);
+ filter: drop-shadow(
+   0 0 7px rgba(6, 65, 175, 0.684)
+ );
+ animation: arcBlue 9s ease-in-out infinite;
+}
+/* =========================================
+  TEAL
+========================================= */
+.footer-arc-teal {
+ width: 820px;
+ height: 270px;
+ border-color: rgba(17, 180, 160, 0.82);
+ filter: drop-shadow(
+   0 0 7px rgba(2, 180, 160, 0.16)
+ );
+ animation: arcTeal 11s ease-in-out 1s infinite;
+}
+/* =========================================
+  CHAMPAGNE GOLD
+========================================= */
+.footer-arc-gold {
+ width: 740px;
+ height: 240px;
+ border-color: rgba(241, 180, 49, 0.785);
+ filter: drop-shadow(
+   0 0 8px rgba(119, 84, 9, 0.916)
+ );
+ animation: arcGold 10s ease-in-out 2s infinite;
+}
+/* =========================================
+  SOFT VIOLET
+========================================= */
+.footer-arc-violet {
+ width: 660px;
+ height: 215px;
+ border-color: rgb(144, 109, 232);
+ filter: drop-shadow(
+   0 0 7px rgba(127, 99, 197, 0.562)
+ );
+ animation: arcViolet 12s ease-in-out 3s infinite;
+}
+/* =========================================
+  BLUE MOTION
+========================================= */
+@keyframes arcBlue {
+ 0% {
+   opacity: 0.25;
+   transform:
+     translate(-50%, -50%)
+     rotate(-12deg)
+     scale(0.94);
+ }
+ 30% {
+   opacity: 0.70;
+ }
+ 55% {
+   opacity: 0.95;
+   transform:
+     translate(-50%, -50%)
+     rotate(-5deg)
+     scale(1.04);
+ }
+ 80% {
+   opacity: 0.48;
+ }
+ 100% {
+   opacity: 0.25;
+   transform:
+     translate(-50%, -50%)
+     rotate(-12deg)
+     scale(0.94);
+ }
+}
+/* =========================================
+  TEAL MOTION
+========================================= */
+@keyframes arcTeal {
+ 0% {
+   opacity: 0.20;
+   transform:
+     translate(-50%, -50%)
+     rotate(10deg)
+     scale(0.96);
+ }
+ 30% {
+   opacity: 0.62;
+ }
+ 55% {
+   opacity: 0.88;
+   transform:
+     translate(-50%, -50%)
+     rotate(17deg)
+     scale(1.04);
+ }
+ 80% {
+   opacity: 0.42;
+ }
+ 100% {
+   opacity: 0.20;
+   transform:
+     translate(-50%, -50%)
+     rotate(10deg)
+     scale(0.96);
+ }
+}
+/* =========================================
+  GOLD MOTION
+========================================= */
+@keyframes arcGold {
+ 0% {
+   opacity: 0.22;
+   transform:
+     translate(-50%, -50%)
+     rotate(-18deg)
+     scale(0.95);
+ }
+ 35% {
+   opacity: 0.72;
+ }
+ 60% {
+   opacity: 1;
+   transform:
+     translate(-50%, -50%)
+     rotate(-9deg)
+     scale(1.05);
+ }
+ 82% {
+   opacity: 0.44;
+ }
+ 100% {
+   opacity: 0.22;
+   transform:
+     translate(-50%, -50%)
+     rotate(-18deg)
+     scale(0.95);
+ }
+}
+/* =========================================
+  VIOLET MOTION
+========================================= */
+@keyframes arcViolet {
+ 0% {
+   opacity: 0.16;
+   transform:
+     translate(-50%, -50%)
+     rotate(15deg)
+     scale(0.95);
+ }
+ 30% {
+   opacity: 0.55;
+ }
+ 55% {
+   opacity: 0.82;
+   transform:
+     translate(-50%, -50%)
+     rotate(23deg)
+     scale(1.04);
+ }
+ 80% {
+   opacity: 0.35;
+ }
+ 100% {
+   opacity: 0.16;
+   transform:
+     translate(-50%, -50%)
+     rotate(15deg)
+     scale(0.95);
+ }
+}
+/* =========================================
+  FOOTER CONTENT ABOVE ANIMATION
+========================================= */
+footer > *:not(.footer-motion) {
+ position: relative;
+ z-index: 2;
+}

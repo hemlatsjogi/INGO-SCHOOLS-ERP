@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ServicesModules from './ServicesModules';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
@@ -672,6 +673,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           </div>
         </div>
       </section>
+       {/* ====================================================================
+            SERVICES MODULES
+          ==================================================================== */}
+        <ServicesModules />
 
       {/* ====================================================================
           4. REUSABLE SERVICE DETAILS POPUP / MODAL

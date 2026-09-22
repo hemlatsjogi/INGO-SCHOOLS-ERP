@@ -6,7 +6,7 @@ type Audience = "parents" | "teachers" | "principals" | "students";
 interface FAQItem {
   q: string;
   a: string;
-}
+} 
 
 interface AudienceData {
   number: string;
@@ -196,63 +196,6 @@ export default function Insights() {
     );
 
     return () => observer.disconnect();
-  }, []);
-
-  /* --------------------------------
-     HERO PARALLAX
-  -------------------------------- */
-  useEffect(() => {
-    const hero = heroVisualRef.current;
-    const child = childRef.current;
-
-    if (!hero || !child) return;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      const rect = hero.getBoundingClientRect();
-
-      const x =
-        (event.clientX - rect.left) /
-          rect.width -
-        0.5;
-
-      const y =
-        (event.clientY - rect.top) /
-          rect.height -
-        0.5;
-
-      child.style.transform = `
-        translate(
-          ${x * 12}px,
-          ${y * 10 - 8}px
-        )
-      `;
-    };
-
-    const handleMouseLeave = () => {
-      child.style.transform = "";
-    };
-
-    hero.addEventListener(
-      "mousemove",
-      handleMouseMove
-    );
-
-    hero.addEventListener(
-      "mouseleave",
-      handleMouseLeave
-    );
-
-    return () => {
-      hero.removeEventListener(
-        "mousemove",
-        handleMouseMove
-      );
-
-      hero.removeEventListener(
-        "mouseleave",
-        handleMouseLeave
-      );
-    };
   }, []);
 
   /* --------------------------------
