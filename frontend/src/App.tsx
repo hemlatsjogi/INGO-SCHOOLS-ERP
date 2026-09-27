@@ -1,18 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { FeatureCards } from './components/FeatureCards';
 import { StudentCommunity } from './components/StudentCommunity';
 import FAQ from "./components/FAQ";
-import { ServicesPage } from './components/ServicesPage';
-import { KeyFeaturesPage } from './components/KeyFeaturesPage';
-import { AboutPage } from './components/AboutPage';
-import { ContactPage } from './components/ContactPage';
+
+const ServicesPage = lazy(() =>
+  import('./components/ServicesPage').then(m => ({ default: m.ServicesPage }))
+);
+
+const KeyFeaturesPage = lazy(() =>
+  import('./components/KeyFeaturesPage').then(m => ({ default: m.KeyFeaturesPage }))
+);
+
+const AboutPage = lazy(() =>
+  import('./components/AboutPage').then(m => ({ default: m.AboutPage }))
+);
+
+const ContactPage = lazy(() =>
+  import('./components/ContactPage').then(m => ({ default: m.ContactPage }))
+);
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
 import { PaperAirplaneCursor } from './components/PaperAirplaneCursor';
 import { InitialLoader } from './components/InitialLoader';
+import ViewportSection from './components/ViewportSection';
 
 export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'home' | 'services' | 'features' | 'about' | 'contact'>('home');
@@ -113,7 +126,10 @@ export const App: React.FC = () => {
       />
 
       {/* Dynamic Page Views with Smooth Framer Motion Transition */}
+
       <main className="flex-1 flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <Suspense fallback={null}>
+
         <AnimatePresence mode="wait">
           {currentPage === 'home' && (
             <motion.div
@@ -129,14 +145,19 @@ export const App: React.FC = () => {
                 onExploreFeatures={() => handleNavigate('features')}
               />
 
-              {/* 4 Bottom Feature Cards on Home Page */}
-              <div id="features-section">
-                <FeatureCards onNavigate={handleNavigate} />
-              </div>
+              <ViewportSection>
+                <div id="features-section">
+                  <FeatureCards onNavigate={handleNavigate} />
+                </div>
+              </ViewportSection>
 
-              {/* Group of Students Community Showcase */}
-              <StudentCommunity onOpenBooking={handleOpenBooking} />
-              <FAQ />
+              <ViewportSection>
+                <StudentCommunity onOpenBooking={handleOpenBooking} />
+              </ViewportSection>
+
+              <ViewportSection>
+                <FAQ />
+              </ViewportSection>
             </motion.div>
           )}
 
@@ -192,6 +213,7 @@ export const App: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
+        </Suspense>
       </main>
 
       {/* Animated Call-to-Action Banner & Main Footer */}
