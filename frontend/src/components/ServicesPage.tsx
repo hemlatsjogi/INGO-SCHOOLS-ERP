@@ -415,11 +415,11 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   ];
 
   return (
-    <div className="w-full space-y-16 sm:space-y-24 py-4 sm:py-8 select-none">
+    <div className="w-full space-y-16 sm:space-y-24 select-none">
       {/* ====================================================================
           1. SERVICES HERO SECTION
          ==================================================================== */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="services-hero-container relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 lg:pt-14 pb-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
