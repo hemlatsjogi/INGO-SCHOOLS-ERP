@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, School, Mail, User, Phone, Sparkles, Loader2 } from 'lucide-react';
+import { sendBookingInquiry } from '../services/emailService';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -9,6 +10,9 @@ interface BookingModalProps {
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, moduleName }) => {
+  // Guard against non-string props (e.g. event objects)
+  const cleanModuleName = typeof moduleName === 'string' && moduleName.trim().length > 0 ? moduleName.trim() : undefined;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,25 +42,52 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, mod
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrorMessage('');
 
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+
+    if (!trimmedName || trimmedName.length < 2) {
+      setErrorMessage('Please enter your full name (minimum 2 characters).');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      setErrorMessage('Please enter a valid institutional email address.');
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      const response = await fetch('http://localhost:5000/api/inquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+      const result = await sendBookingInquiry({
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: formData.phone.trim(),
+        schoolName: formData.schoolName.trim(),
+        studentCount: formData.studentCount,
+        message: formData.message.trim(),
+        moduleName: cleanModuleName
       });
 
-      if (response.ok) {
+      if (result.success) {
         setIsSuccess(true);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          schoolName: '',
+          studentCount: '100-500',
+          message: ''
+        });
       } else {
-        // Fallback simulate success for frontend demo
-        setIsSuccess(true);
+        setErrorMessage(
+          result.message || 'Unable to submit demo inquiry via EmailJS. Please try again.'
+        );
       }
-    } catch (error) {
-      // If backend is not started, still provide immediate graceful UX success
-      setIsSuccess(true);
+    } catch {
+      setErrorMessage('An unexpected error occurred while sending your request. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -129,14 +160,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, mod
                 <div className="space-y-1">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">
                     <Sparkles className="w-3.5 h-3.5" />
-                    {moduleName ? `${moduleName} Module` : 'Interactive ERP Preview'}
+                    {cleanModuleName ? `${cleanModuleName} Module` : 'Interactive ERP Preview'}
                   </div>
                   <h3 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-                    {moduleName ? `Inquire: ${moduleName}` : 'Book a Personalized Demo'}
+                    {cleanModuleName ? `Inquire: ${cleanModuleName}` : 'Book a Personalized Demo'}
                   </h3>
                   <p className="text-slate-500 text-sm">
-                    {moduleName
-                      ? `Send an inquiry for ${moduleName} or schedule a personalized walkthrough.`
+                    {cleanModuleName
+                      ? `Send an inquiry for ${cleanModuleName} or schedule a personalized walkthrough.`
                       : "Discover how INGO Schools streamlines your academy's administration."}
                   </p>
                 </div>
