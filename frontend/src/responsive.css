@@ -17,7 +17,7 @@ INGO-SCHOOLS-ERP: Multi-Tier Responsive Media Queries & Fluid Layouts
 .ingo-nav-container {
 padding-left: 1rem !important;
 padding-right: 1rem !important;
-height: 70px !important;
+height: 100% !important;
 }
 .ingo-hero-container {
 padding-top: 1.5rem !important;
@@ -529,4 +529,42 @@ button {
 footer {
   overflow: hidden;
 }
+}
+
+/* =========================================================
+   SERVICES HERO SECTION RESPONSIVE POLISH
+   ========================================================= */
+.services-hero-container {
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
+  overflow: visible;
+}
+
+@media screen and (max-width: 480px) {
+  /* Prevent horizontal scroll, account for mobile navbar (~72px) with comfortable breathing room */
+  .services-hero-container {
+    padding-top: 1.75rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .services-hero-container {
+    padding-top: 2.25rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .services-hero-container {
+    padding-top: 2.75rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .services-hero-container {
+    padding-top: 3.25rem !important;
+    padding-bottom: 2.5rem !important;
+  }
 }

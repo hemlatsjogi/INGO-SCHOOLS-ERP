@@ -36,12 +36,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
   return (
     <header 
       className={`ingo-navbar ${
-    isScrolled ? 'ingo-navbar-scrolled' : ''
-    }`}>
-      <div className="ingo-nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        isScrolled ? 'ingo-navbar-scrolled' : ''
+      }`}
+    >
+      <div className="ingo-nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
         
         {/* Brand Logo matching the original image */}
-       <a
+        <a
           href="#home"
           onClick={(e) => {
             e.preventDefault();
@@ -80,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
                   e.preventDefault();
                   onNavigate(link.page);
                 }}
-                className={` ingo-nav-link relative cursor-pointer ${
+                className={`ingo-nav-link relative cursor-pointer ${
                   isActive ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -127,11 +128,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden border-b border-slate-200 bg-white/95 backdrop-blur-lg px-4 pt-3 pb-6 space-y-3"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="md:hidden absolute top-full left-0 right-0 w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2.5 shadow-xl"
           >
             {navLinks.map((link) => {
               const isActive = activePage.toLowerCase() === link.page.toLowerCase();
@@ -144,9 +145,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
                     onNavigate(link.page);
                     setMobileMenuOpen(false);
                   }}
-                  className={`block px-3 py-2.5 rounded-lg text-base font-medium transition-colors cursor-pointer ${
+                  className={`block px-3.5 py-2.5 rounded-xl text-base font-medium transition-colors cursor-pointer ${
                     isActive
-                      ? 'text-blue-600 bg-blue-50/70 font-semibold'
+                      ? 'text-blue-600 bg-blue-50/80 font-semibold'
                       : 'text-slate-700 hover:bg-slate-50'
                   }`}
                 >
@@ -161,7 +162,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
                   setMobileMenuOpen(false);
                   onOpenBooking();
                 }}
-                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-full text-base font-semibold text-white bg-blue-600 shadow-md shadow-blue-500/20 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-full text-base font-semibold text-white bg-blue-600 shadow-md shadow-blue-500/25 active:scale-95 transition-all"
               >
                 <span>Book Now</span>
                 <ArrowRight className="w-4 h-4" />

@@ -289,27 +289,37 @@ footer > *:not(.footer-motion) {
   z-index: 9999;
   left: 0;
   width: 100%;
-  height: 120px;
+  height: 88px;
 
-  padding: 0 55px;
+  padding: 0 40px;
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
 
-  background: transparent;
-  border-bottom: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.45);
+  border-bottom: 1px solid rgba(220, 225, 235, 0.35);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
   transition:
-    height 0.45s cubic-bezier(.22,1,.36,1),
-    padding 0.45s cubic-bezier(.22,1,.36,1),
-    background 0.45s ease,
-    box-shadow 0.45s ease;
+    height 0.35s cubic-bezier(.22,1,.36,1),
+    padding 0.35s cubic-bezier(.22,1,.36,1),
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    border-bottom-color 0.35s ease;
 }
 
 .ingo-nav-container {
   position: relative;
   width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* =========================================
@@ -317,8 +327,8 @@ footer > *:not(.footer-motion) {
 ========================================= */
 
 .ingo-brand {
-  width: 120px;
-  height: 70px;
+  width: 110px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -334,22 +344,22 @@ footer > *:not(.footer-motion) {
 
   gap: 2px;
 
-  transition: all 0.45s cubic-bezier(.22,1,.36,1);
+  transition: all 0.35s cubic-bezier(.22,1,.36,1);
 }
 
 .ingo-crown {
-  width: 42px;
+  width: 38px;
   height: auto;
 
   object-fit: contain;
 
   transition:
-    width 0.45s ease,
-    transform 0.45s ease;
+    width 0.35s ease,
+    transform 0.35s ease;
 }
 
 .ingo-logo-text {
-  width: 82px;
+  width: 78px;
   height: auto;
 
   object-fit: contain;
@@ -366,20 +376,20 @@ footer > *:not(.footer-motion) {
 ========================================= */
 
 .ingo-brand.is-scrolled {
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
 
-  border-radius: 16px;
+  border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.75);
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.85);
 
   box-shadow:
-    0 8px 25px rgba(30, 40, 60, 0.10);
+    0 6px 20px rgba(30, 40, 60, 0.08);
 }
 
 .ingo-brand.is-scrolled .ingo-logo-wrapper {
@@ -387,9 +397,9 @@ footer > *:not(.footer-motion) {
 }
 
 .ingo-brand.is-scrolled .ingo-crown {
-  width: 45px;
+  width: 40px;
 
-  transform: scale(1.09);
+  transform: scale(1.05);
 }
 
 .ingo-brand.is-scrolled .ingo-logo-text {
@@ -409,9 +419,9 @@ footer > *:not(.footer-motion) {
   padding-left: 35px;
   padding-right: 35px;
 
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.85);
 
-  border-bottom-color: rgba(220, 225, 235, 0.45);
+  border-bottom-color: rgba(220, 225, 235, 0.65);
 
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -431,13 +441,13 @@ footer > *:not(.footer-motion) {
   left: 50%;
   transform: translateX(-50%);
 
-  gap: 5px;
+  gap: 4px;
 
-  padding: 7px 10px;
+  padding: 6px 10px;
 
   border-radius: 18px;
 
-  background: rgba(225, 218, 201, 0.42);
+  background: rgba(225, 218, 201, 0.45);
 
   backdrop-filter: blur(24px) saturate(125%);
   -webkit-backdrop-filter: blur(24px) saturate(125%);
@@ -456,7 +466,7 @@ footer > *:not(.footer-motion) {
 .ingo-nav-link {
   position: relative;
 
-  padding: 9px 14px;
+  padding: 8px 14px;
 
   border-radius: 12px;
 
@@ -464,13 +474,14 @@ footer > *:not(.footer-motion) {
 
   font-family: "Combina", "Inter", sans-serif;
 
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
+  white-space: nowrap;
 
   transition:
-    color 0.3s ease,
-    background 0.3s ease,
-    transform 0.3s ease;
+    color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
 }
 
 .ingo-nav-link:hover {
@@ -478,7 +489,7 @@ footer > *:not(.footer-motion) {
 
   background: rgba(255, 255, 255, 0.42);
 
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 
@@ -512,31 +523,51 @@ footer > *:not(.footer-motion) {
 
 
 /* =========================
-   MOBILE
+   TABLET & MOBILE
 ========================= */
+
+@media (max-width: 1024px) {
+  .ingo-navbar {
+    padding: 0 24px;
+  }
+
+  .ingo-navbar-scrolled {
+    padding: 0 24px;
+  }
+}
 
 @media (max-width: 767px) {
 
   .ingo-navbar {
-    height: 72px;
+    height: 70px;
 
-    padding: 0 18px;
+    padding: 0 16px;
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.92);
 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
   }
 
   .ingo-navbar-scrolled {
     height: 64px;
 
     padding: 0 16px;
+    background: rgba(255, 255, 255, 0.96);
   }
 
   .ingo-brand {
-    width: 90px;
-    height: 58px;
+    width: 88px;
+    height: 52px;
+  }
+
+  .ingo-crown {
+    width: 32px;
+  }
+
+  .ingo-logo-text {
+    width: 68px;
   }
 
   .ingo-logo-full {
