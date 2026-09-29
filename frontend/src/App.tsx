@@ -32,8 +32,10 @@ export const App: React.FC = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [bookingModuleName, setBookingModuleName] = useState<string>('');
 
-  const handleOpenBooking = (moduleName?: string) => {
-    setBookingModuleName(moduleName || '');
+  const handleOpenBooking = (moduleName?: unknown) => {
+    // Only accept moduleName if it is explicitly a non-empty string, ignoring React MouseEvent objects
+    const cleanModuleName = typeof moduleName === 'string' ? moduleName.trim() : '';
+    setBookingModuleName(cleanModuleName);
     setIsBookingModalOpen(true);
   };
 

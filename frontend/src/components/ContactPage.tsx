@@ -17,6 +17,7 @@ import {
   FileText,
   X
 } from 'lucide-react';
+import { sendContactEmail } from '../services/emailService';
 
 interface ContactPageProps {
   onOpenBooking?: () => void;
@@ -160,26 +161,19 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
     const randomTicket = `INGO-${Math.floor(100000 + Math.random() * 900000)}`;
 
     try {
-      const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          name: trimmedName,
-          email: trimmedEmail,
-          phone: cleanPhone,
-          message: trimmedMessage,
-          ticketId: randomTicket
-        })
+      const result = await sendContactEmail({
+        ...formData,
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: cleanPhone,
+        message: trimmedMessage,
+        ticketId: randomTicket
       });
 
-      const data = await response.json().catch(() => null);
-
-      if (response.ok && data?.success) {
+      if (result.success) {
         setSubmitted(true);
-        setTicketId(data.ticketId || randomTicket);
-        setSuccessMessage(data.message || 'Thank you! Your message has been sent successfully. We will contact you soon.');
+        setTicketId(result.ticketId || randomTicket);
+        setSuccessMessage(result.message || 'Thank you! Your message has been sent successfully. We will contact you soon.');
         // Clear/reset form fields after successful submission
         setFormData({
           name: '',
@@ -194,12 +188,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
       } else {
         setSubmitted(false);
         setErrorMessage(
-          data?.message || 'Something went wrong. Please try again or contact us directly.'
+          result.message || 'Something went wrong while sending your message. Please try again or contact us directly.'
         );
       }
     } catch {
       setSubmitted(false);
-      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      setErrorMessage('Something went wrong while sending your message. Please try again or contact us directly.');
     } finally {
       setIsSubmitting(false);
     }

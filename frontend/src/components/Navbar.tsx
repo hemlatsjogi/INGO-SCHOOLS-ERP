@@ -102,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
         <div className="ingo-nav-right hidden md:flex items-center">
           <button
             id="book-now-btn"
-            onClick={onOpenBooking}
+            onClick={() => onOpenBooking()}
             className="group relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-full overflow-hidden shadow-md shadow-blue-500/20 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 active:scale-95 transition-all duration-200"
           >
             <span className="flex items-center gap-2">
