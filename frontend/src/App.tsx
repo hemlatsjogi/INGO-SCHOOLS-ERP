@@ -126,14 +126,10 @@ export const App: React.FC = () => {
       />
 
       {/* Dynamic Page Views with Smooth Framer Motion Transition */}
-<<<<<<< HEAD
-      <main className="flex-1 flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-[120px] pb-6">
-=======
-
       <main className="flex-1 flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <Suspense fallback={null}>
 
->>>>>>> origin/shivani-frontend
+
         <AnimatePresence mode="wait">
           {currentPage === 'home' && (
             <motion.div
