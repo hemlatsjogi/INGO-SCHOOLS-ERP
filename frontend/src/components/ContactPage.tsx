@@ -73,8 +73,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
       setTimeout(() => {
         const formEl = document.getElementById('contact-form');
         if (formEl) {
-          const navbarOffset = 88;
-          const pos = formEl.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
+          const navbarEl = document.querySelector('.ingo-navbar');
+          const navbarOffset = navbarEl ? navbarEl.getBoundingClientRect().height : 88;
+          const pos = formEl.getBoundingClientRect().top + window.pageYOffset - (navbarOffset + 16);
           window.scrollTo({ top: Math.max(0, pos), behavior: 'smooth' });
         }
       }, 150);

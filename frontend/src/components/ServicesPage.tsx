@@ -378,9 +378,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           document.getElementById(targetTab!) ||
           document.getElementById('services-modules-section');
         if (el) {
-          const navbarOffset = 88;
+          const navbarEl = document.querySelector('.ingo-navbar');
+          const navbarOffset = navbarEl ? navbarEl.getBoundingClientRect().height : 88;
           const pos =
-            el.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
+            el.getBoundingClientRect().top + window.pageYOffset - (navbarOffset + 16);
           window.scrollTo({ top: Math.max(0, pos), behavior: 'smooth' });
         }
       }, 120);
