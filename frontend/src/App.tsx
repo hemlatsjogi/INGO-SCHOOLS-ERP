@@ -129,7 +129,16 @@ export const App: React.FC = () => {
 
       {/* Dynamic Page Views with Smooth Framer Motion Transition */}
       <main className="flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8 pb-10 sm:pb-16">
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center min-h-[50vh] w-full">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin" />
+                <span className="text-sm font-medium text-slate-500 tracking-wide">Loading INGO...</span>
+              </div>
+            </div>
+          }
+        >
 
 
         <AnimatePresence mode="wait">
