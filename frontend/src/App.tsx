@@ -128,7 +128,7 @@ export const App: React.FC = () => {
       />
 
       {/* Dynamic Page Views with Smooth Framer Motion Transition */}
-      <main className="flex-1 flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <main className="flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8 pb-10 sm:pb-16">
         <Suspense fallback={null}>
 
 
@@ -148,7 +148,7 @@ export const App: React.FC = () => {
               />
 
               <ViewportSection>
-                <div id="features-section">
+                <div id="features-section" className="scroll-mt-navbar">
                   <FeatureCards onNavigate={handleNavigate} />
                 </div>
               </ViewportSection>

@@ -132,7 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="md:hidden absolute top-full left-0 right-0 w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2.5 shadow-xl"
+            className="md:hidden absolute top-full left-0 right-0 w-full max-h-[calc(100vh-var(--navbar-height,70px))] overflow-y-auto border-b border-slate-200/90 bg-white/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2.5 shadow-xl"
           >
             {navLinks.map((link) => {
               const isActive = activePage.toLowerCase() === link.page.toLowerCase();

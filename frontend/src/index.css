@@ -2,6 +2,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --navbar-height: 88px;
+  --navbar-height-scrolled: 72px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --navbar-height: 80px;
+    --navbar-height-scrolled: 68px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --navbar-height: 70px;
+    --navbar-height-scrolled: 64px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--navbar-height) + 16px);
+}
+
+.scroll-mt-navbar {
+  scroll-margin-top: calc(var(--navbar-height) + 20px);
+}
+
 @layer base {
  body {
    background-color: #F8FAFC;
@@ -284,12 +312,11 @@ footer > *:not(.footer-motion) {
 ========================================================= */
 
 .ingo-navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  z-index: 9999;
-  left: 0;
+  z-index: 1000;
   width: 100%;
-  height: 88px;
+  height: var(--navbar-height);
 
   padding: 0 40px;
 
@@ -414,7 +441,7 @@ footer > *:not(.footer-motion) {
 ========================= */
 
 .ingo-navbar-scrolled {
-  height: 72px;
+  height: var(--navbar-height-scrolled);
 
   padding-left: 35px;
   padding-right: 35px;
@@ -528,10 +555,12 @@ footer > *:not(.footer-motion) {
 
 @media (max-width: 1024px) {
   .ingo-navbar {
+    height: var(--navbar-height);
     padding: 0 24px;
   }
 
   .ingo-navbar-scrolled {
+    height: var(--navbar-height-scrolled);
     padding: 0 24px;
   }
 }
@@ -539,7 +568,7 @@ footer > *:not(.footer-motion) {
 @media (max-width: 767px) {
 
   .ingo-navbar {
-    height: 70px;
+    height: var(--navbar-height);
 
     padding: 0 16px;
 
@@ -551,7 +580,7 @@ footer > *:not(.footer-motion) {
   }
 
   .ingo-navbar-scrolled {
-    height: 64px;
+    height: var(--navbar-height-scrolled);
 
     padding: 0 16px;
     background: rgba(255, 255, 255, 0.96);

@@ -277,7 +277,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
       {/* ====================================================================
           SECTION 2: "OUR STORY" ("From Challenges to a Smarter Solution")
          ==================================================================== */}
-      <section id="our-story" className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <section id="our-story" className="scroll-mt-navbar relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Left Column: Narrative Copy */}
