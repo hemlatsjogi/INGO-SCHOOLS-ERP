@@ -19,30 +19,28 @@ interface AboutPageProps {
   onOpenBooking: () => void;
 }
 
-// Smooth reveal variants for text and components
+// Smooth reveal variants for text and components - optimized for performance
 const smoothReveal: Variants = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(4px)' },
+  hidden: { opacity: 0, y: 16 },
   visible: (custom: number = 0) => ({
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: {
-      duration: 0.7,
-      delay: custom * 0.12,
+      duration: 0.4,
+      delay: Math.min(custom * 0.08, 0.3),
       ease: 'easeOut'
     }
   })
 };
 
 const imageSmoothReveal: Variants = {
-  hidden: { opacity: 0, scale: 0.94, y: 20 },
+  hidden: { opacity: 0, y: 14 },
   visible: (custom: number = 0) => ({
     opacity: 1,
-    scale: 1,
     y: 0,
     transition: {
-      duration: 0.8,
-      delay: custom * 0.15,
+      duration: 0.45,
+      delay: Math.min(custom * 0.08, 0.3),
       ease: 'easeOut'
     }
   })
@@ -263,8 +261,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
               className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white group cursor-pointer"
             >
               <img
-                src="/assets/about_computer_lab.svg"
+                src="/assets/about_computer_lab.jpg"
                 alt="Students and teacher in modern computer lab"
+                loading="eager"
+                decoding="async"
                 className="w-full h-[320px] sm:h-[400px] lg:h-[430px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </motion.div>
@@ -370,8 +370,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
                 className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-white group cursor-pointer"
               >
                 <img
-                  src="/assets/about_teachers_meeting.svg"
+                  src="/assets/about_teachers_meeting.jpg"
                   alt="Teacher helping students with laptop"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[220px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </motion.div>
@@ -387,8 +389,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
                 className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-white group cursor-pointer sm:translate-y-6"
               >
                 <img
-                  src="/assets/about_admin_colleagues.svg"
+                  src="/assets/about_admin_colleagues.jpg"
                   alt="Administrators collaborating at desk"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[220px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </motion.div>
@@ -566,8 +570,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
                 className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white w-full"
               >
                 <img
-                  src="/assets/about_campus_students.svg"
+                  src="/assets/about_campus_students.jpg"
                   alt="Students walking towards modern school campus"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[280px] sm:h-[350px] object-cover transition-transform duration-700 hover:scale-105"
                 />
 
@@ -625,8 +631,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onOpenBooking }) => {
             {/* Schoolgirl Portrait Card */}
             <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-white w-full max-w-[260px] sm:max-w-[280px]">
               <img
-                src="/assets/schoolgirl_hero.svg"
+                src="/assets/schoolgirl_hero.jpg"
                 alt="INGO student with books"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-[260px] sm:h-[290px] object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>

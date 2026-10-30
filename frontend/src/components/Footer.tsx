@@ -65,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onNavigate }) => 
              {/* Schoolgirl Photo Cutout with Native Origami Shapes & Doodles */}
              <div className="relative z-10 w-56 sm:w-64 lg:w-72 xl:w-80 h-auto self-end">
                <img
-                 src="/assets/footer_student.svg"
+                 src="/assets/footer_student.png"
                  alt="INGO Schools smiling partner"
                  className="w-full h-auto object-contain filter drop-shadow-lg transition-transform duration-300 hover:scale-105"
                />

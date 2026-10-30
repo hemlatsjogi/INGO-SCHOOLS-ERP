@@ -21,6 +21,19 @@ const AboutPage = lazy(() =>
 const ContactPage = lazy(() =>
   import('./components/ContactPage').then(m => ({ default: m.ContactPage }))
 );
+
+// Preload About and Contact modules in idle time so clicking their nav tabs is instantaneous
+if (typeof window !== 'undefined') {
+  const idlePreload = () => {
+    import('./components/AboutPage');
+    import('./components/ContactPage');
+  };
+  if ('requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(idlePreload, { timeout: 2000 });
+  } else {
+    setTimeout(idlePreload, 1200);
+  }
+}
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
 import { PaperAirplaneCursor } from './components/PaperAirplaneCursor';
@@ -145,10 +158,10 @@ export const App: React.FC = () => {
           {currentPage === 'home' && (
             <motion.div
               key="home-view"
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
               className="space-y-6"
             >
               <Hero
@@ -175,10 +188,10 @@ export const App: React.FC = () => {
           {currentPage === 'features' && (
             <motion.div
               key="features-view"
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
               {/* Flagship Interactive Feature Showcase Section */}
               <KeyFeaturesPage onOpenBooking={handleOpenBooking} />
@@ -188,10 +201,10 @@ export const App: React.FC = () => {
           {currentPage === 'services' && (
             <motion.div
               key="services-view"
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
               <ServicesPage
                 onOpenBooking={handleOpenBooking}
@@ -203,10 +216,10 @@ export const App: React.FC = () => {
           {currentPage === 'about' && (
             <motion.div
               key="about-view"
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
               <AboutPage onOpenBooking={handleOpenBooking} />
             </motion.div>
@@ -215,10 +228,10 @@ export const App: React.FC = () => {
           {currentPage === 'contact' && (
             <motion.div
               key="contact-view"
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             >
               <ContactPage onOpenBooking={handleOpenBooking} />
             </motion.div>

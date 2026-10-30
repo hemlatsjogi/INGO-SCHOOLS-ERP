@@ -39,8 +39,10 @@ export const StudentCommunity: React.FC<StudentCommunityProps> = ({ onOpenBookin
             {/* Main Group Photo */}
             <div className="relative">
               <img
-                src="/assets/group_of_students.svg"
+                src="/assets/group_of_students.png"
                 alt="Group of diverse INGO Schools students learning together"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto object-contain filter drop-shadow-xl transition-transform duration-500 hover:scale-[1.02]"
               />
             </div>

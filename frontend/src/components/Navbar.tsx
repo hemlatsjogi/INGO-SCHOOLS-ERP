@@ -8,6 +8,26 @@ interface NavbarProps {
   onOpenBooking: () => void;
 }
 
+// Prefetch dynamic route modules on user intent (hover/focus/touch)
+const preloadPage = (page: string) => {
+  switch (page.toLowerCase()) {
+    case 'about':
+      import('./AboutPage');
+      break;
+    case 'contact':
+      import('./ContactPage');
+      break;
+    case 'services':
+      import('./ServicesPage');
+      break;
+    case 'features':
+      import('./KeyFeaturesPage');
+      break;
+    default:
+      break;
+  }
+};
+
 export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBooking }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -77,6 +97,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
               <a
                 key={link.name}
                 href={link.href}
+                onMouseEnter={() => preloadPage(link.page)}
+                onFocus={() => preloadPage(link.page)}
                 onClick={(e) => {
                   e.preventDefault();
                   onNavigate(link.page);
@@ -140,6 +162,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenBo
                 <a
                   key={link.name}
                   href={link.href}
+                  onTouchStart={() => preloadPage(link.page)}
+                  onMouseEnter={() => preloadPage(link.page)}
                   onClick={(e) => {
                     e.preventDefault();
                     onNavigate(link.page);

@@ -10,7 +10,7 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreFeatures }) => {
-  const studentImage = '/assets/indian_student_hero.svg';
+  const studentImage = '/assets/indian_student_hero.png';
 
   return (
     <section className="relative w-full pt-6 sm:pt-10 lg:pt-14 pb-4 overflow-visible">
@@ -165,10 +165,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onExploreFeatures }) 
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   className="w-full flex flex-col items-center relative"
                 >
-                  {/* Single Indian Student Image in SVG format */}
+                  {/* Single Indian Student Image in PNG format */}
                   <img
                     src={studentImage}
                     alt="INGO Schools Student"
+                    decoding="async"
                     className="w-full h-auto object-contain filter drop-shadow-2xl transition-transform duration-500 hover:scale-[1.02]"
                   />
                 </motion.div>

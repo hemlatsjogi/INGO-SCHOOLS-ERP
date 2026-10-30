@@ -314,8 +314,10 @@ export const InteractiveFeatureShowcase: React.FC<InteractiveFeatureShowcaseProp
                   className="relative z-10 w-full flex items-center justify-center"
                 >
                   <img
-                    src="/assets/ingo_center_student_transparent.svg"
+                    src="/assets/ingo_center_student_transparent.png"
                     alt="Happy INGO School Student"
+                    loading="lazy"
+                    decoding="async"
                     className="w-[290px] sm:w-[350px] lg:w-[380px] h-auto object-contain filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.18)]"
                   />
                 </motion.div>
