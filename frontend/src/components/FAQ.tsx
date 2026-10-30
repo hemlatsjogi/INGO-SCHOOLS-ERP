@@ -179,6 +179,14 @@ export default function Insights() {
         ".insights-section .reveal"
       );
 
+    if (elements.length === 0) return;
+
+    // Check if IntersectionObserver is available
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((el) => el.classList.add("visible"));
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -188,14 +196,32 @@ export default function Insights() {
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.05, rootMargin: "50px" }
     );
 
-    elements.forEach((element) =>
-      observer.observe(element)
-    );
+    elements.forEach((element) => {
+      // If already within viewport or partially visible, immediately reveal
+      const rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        element.classList.add("visible");
+      } else {
+        observer.observe(element);
+      }
+    });
 
-    return () => observer.disconnect();
+    // Fallback: reveal any remaining elements after 1.5s to avoid permanently hidden content
+    const timeout = setTimeout(() => {
+      elements.forEach((el) => {
+        if (!el.classList.contains("visible")) {
+          el.classList.add("visible");
+        }
+      });
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeout);
+      observer.disconnect();
+    };
   }, []);
 
   /* --------------------------------
