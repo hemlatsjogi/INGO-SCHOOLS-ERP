@@ -152,8 +152,10 @@ export const ServicesHeroVisual: React.FC = () => {
         className="absolute bottom-0 left-0 sm:left-1 lg:left-2 w-[180px] min-[400px]:w-[200px] min-[480px]:w-[220px] sm:w-[245px] md:w-[260px] lg:w-[275px] max-w-[46%] z-20 pointer-events-none"
       >
         <img
-          src="/assets/indian_student_hero.svg"
+          src="/assets/indian_student_hero.png"
           alt="Indian School Student - INGO Schools"
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto object-contain filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.25)]"
         />
       </motion.div>

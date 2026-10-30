@@ -24,14 +24,13 @@ interface ContactPageProps {
 }
 
 const smoothReveal: Variants = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(4px)' },
+  hidden: { opacity: 0, y: 16 },
   visible: (custom: number = 0) => ({
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: {
-      duration: 0.65,
-      delay: custom * 0.1,
+      duration: 0.4,
+      delay: Math.min(custom * 0.08, 0.25),
       ease: 'easeOut'
     }
   })
@@ -708,8 +707,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
               className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-white group cursor-pointer"
             >
               <img
-                src="/assets/contact_support_specialist.svg"
+                src="/assets/contact_support_specialist.jpg"
                 alt="INGO Schools Education Advisor"
+                loading="eager"
+                decoding="async"
                 className="w-full h-[280px] sm:h-[320px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
